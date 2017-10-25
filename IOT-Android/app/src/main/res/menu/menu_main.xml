@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ar.edu.itba.iot.iot_android.activities.MainActivity">
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@android:drawable/stat_notify_more"/>
+</menu>
