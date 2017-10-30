@@ -2,14 +2,20 @@ package ar.edu.itba.iot.iot_android.activities;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
+
+import com.mindorks.placeholderview.PlaceHolderView;
 
 import ar.edu.itba.iot.iot_android.R;
+import ar.edu.itba.iot.iot_android.services.DeviceService;
 import ar.edu.itba.iot.iot_android.view.MyAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,11 +26,27 @@ public class MainActivity extends AppCompatActivity {
     private String[] targetTemps = new String[7];
     private String[] currentTemps = new String[7];
 
+    private PlaceHolderView mDrawerView;
+    private DrawerLayout mDrawer;
+    private Toolbar mToolbar;
+    private PlaceHolderView mGalleryView;
+
+    private DeviceService deviceService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDrawer = (DrawerLayout)findViewById(R.id.drawerLayout);
+        mDrawerView = (PlaceHolderView)findViewById(R.id.drawerView);
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        mGalleryView = (PlaceHolderView)findViewById(R.id.galleryView);
+        setupDrawer();
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
@@ -65,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
         targetTemps[6] = "72°C";
         mAdapter = new MyAdapter(devicesNames, currentTemps, targetTemps);
         mRecyclerView.setAdapter(mAdapter);
+
+        //deviceService = new DeviceService();
+        //deviceService.getDevices();
     }
 
 
@@ -74,6 +99,33 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    private void setupDrawer(){
+        mDrawerView
+                .addView(new DrawerHeader())
+                .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE))
+                .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_REQUESTS))
+                .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_MESSAGE))
+                .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_GROUPS))
+                .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_NOTIFICATIONS))
+                .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_TERMS))
+                .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS))
+                .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_LOGOUT));
+
+        ActionBarDrawerToggle  drawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.open_drawer, R.string.close_drawer){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+
+        mDrawer.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
     }
 
 }
