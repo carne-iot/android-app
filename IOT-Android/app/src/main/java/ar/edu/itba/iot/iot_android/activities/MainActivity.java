@@ -1,24 +1,35 @@
 package ar.edu.itba.iot.iot_android.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MotionEvent;
+import android.view.View;
+
+import java.io.IOException;
 
 import ar.edu.itba.iot.iot_android.R;
+import ar.edu.itba.iot.iot_android.service.DeviceService;
 import ar.edu.itba.iot.iot_android.view.MyAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private String[] devicesNames = new String[7];
     private String[] targetTemps = new String[7];
     private String[] currentTemps = new String[7];
+    private final DeviceService deviceService = new DeviceService();
+    private static final int MY_PERMISSIONS_REQUEST_INTERNET = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +74,16 @@ public class MainActivity extends AppCompatActivity {
         targetTemps[4] = "64°C";
         targetTemps[5] = "75°C";
         targetTemps[6] = "72°C";
+        View v = this.findViewById(R.id.addDevice);
+        v.setOnClickListener(this);
+
+//        try {
+//            deviceService.getDevices();
+//        } catch (IOException e) {
+//        }
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET},
+                1);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_NETWORK_STATE},3);
         mAdapter = new MyAdapter(devicesNames, currentTemps, targetTemps);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -76,4 +97,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onClick(View v) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET},
+                        1);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_NETWORK_STATE},3);
+    }
 }

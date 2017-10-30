@@ -1,9 +1,5 @@
 package ar.edu.itba.iot.iot_android.model;
 
-/**
- * Created by julianrodrigueznicastro on 10/25/17.
- */
-
 public class Device {
 
     private double currentTemperature = -1;
