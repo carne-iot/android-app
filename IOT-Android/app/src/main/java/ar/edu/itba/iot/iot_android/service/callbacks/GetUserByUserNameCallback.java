@@ -1,8 +1,5 @@
 package ar.edu.itba.iot.iot_android.service.callbacks;
 
-import android.app.Activity;
-import android.util.Log;
-
 import java.io.IOException;
 
 import ar.edu.itba.iot.iot_android.controller.UserController;
@@ -14,11 +11,10 @@ import okhttp3.Response;
  * Created by julianrodrigueznicastro on 10/31/17.
  */
 
-public class LoginCallback implements Callback {
-
+public class GetUserByUserNameCallback implements Callback {
     private final UserController userController;
 
-    public LoginCallback(UserController userController) {
+    public GetUserByUserNameCallback(UserController userController) {
         this.userController = userController;
     }
 
@@ -29,7 +25,7 @@ public class LoginCallback implements Callback {
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        userController.getUser().setToken(response.header("x-token"));
-        userController.getUser().setLogoutURL(response.header("x-logout-url"));
+        //TODO no anda el endpoint y no se sabe como devuelve
+        userController.getUser().setId(Long.valueOf(response.header("")));
     }
 }

@@ -1,10 +1,8 @@
 package ar.edu.itba.iot.iot_android.activities;
 
-import android.Manifest;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,13 +16,8 @@ import ar.edu.itba.iot.iot_android.R;
 
 import com.mindorks.placeholderview.PlaceHolderView;
 
-import java.util.Observable;
-
 import ar.edu.itba.iot.iot_android.controller.UserController;
 import ar.edu.itba.iot.iot_android.model.User;
-import ar.edu.itba.iot.iot_android.service.DeviceService;
-import ar.edu.itba.iot.iot_android.service.UserService;
-import ar.edu.itba.iot.iot_android.service.callbacks.LogInCallback;
 import ar.edu.itba.iot.iot_android.view.DrawerHeader;
 import ar.edu.itba.iot.iot_android.view.DrawerMenuItem;
 import ar.edu.itba.iot.iot_android.view.MyAdapter;
@@ -63,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
         devicesNames[0] = "Device 1";
         devicesNames[1] = "Device 2";
         devicesNames[2] = "Device 3";

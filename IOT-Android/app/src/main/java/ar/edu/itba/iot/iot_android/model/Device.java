@@ -51,4 +51,8 @@ public class Device {
     public void setWillTurnOver(boolean willTurnOver) {
         this.willTurnOver = willTurnOver;
     }
+
+    public void setCurrentTemperature(double currentTemperature) {
+        this.currentTemperature = currentTemperature;
+    }
 }

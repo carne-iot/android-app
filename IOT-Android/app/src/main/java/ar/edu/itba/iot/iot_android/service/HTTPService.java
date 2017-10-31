@@ -34,7 +34,7 @@ public class HTTPService {
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .url(url)
-                .addHeader("x-token", token)
+                .addHeader("Authorization", "Bearer " + token)
                 .post(body)
                 .build();
         client.newCall(request).enqueue(callback);
@@ -49,7 +49,7 @@ public class HTTPService {
 
     public void get(String url, String token, Callback callback) throws IOException {
         Request request = new Request.Builder()
-                .addHeader("x-token", token)
+                .addHeader("Authorization", "Bearer " + token)
                 .url(url)
                 .build();
         client.newCall(request).enqueue(callback);

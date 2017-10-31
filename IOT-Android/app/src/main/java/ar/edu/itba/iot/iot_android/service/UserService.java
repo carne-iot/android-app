@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashSet;
 
 import ar.edu.itba.iot.iot_android.model.Device;
+import ar.edu.itba.iot.iot_android.service.callbacks.GetUserByUserNameCallback;
 import ar.edu.itba.iot.iot_android.utils.JSONParser;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -39,13 +40,15 @@ public class UserService {
         }
     }
 
-    public Device getDevice(Long userId, String deviceId, String token, Callback callback){
+    public void getDevice(Long userId, String deviceId, String token, Callback callback){
         try {
-            httpService.get(baseURL + "/users/" + userId + "/devices/" + deviceId, callback);
+            httpService.get(baseURL + "/users/" + userId + "/devices/" + deviceId, token, callback);
         } catch (IOException e) {
             e.printStackTrace();
             Log.d("fail:", "no anda");
         }
-        return null;
+    }
+
+    public void getUserByUserName(String userName, String password, GetUserByUserNameCallback getUserByUserNameCallback) {
     }
 }
