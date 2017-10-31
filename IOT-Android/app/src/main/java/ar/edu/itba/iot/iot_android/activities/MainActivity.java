@@ -1,7 +1,9 @@
 package ar.edu.itba.iot.iot_android.activities;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,8 +18,13 @@ import ar.edu.itba.iot.iot_android.R;
 
 import com.mindorks.placeholderview.PlaceHolderView;
 
+import java.util.Observable;
+
+import ar.edu.itba.iot.iot_android.controller.UserController;
+import ar.edu.itba.iot.iot_android.model.User;
 import ar.edu.itba.iot.iot_android.service.DeviceService;
 import ar.edu.itba.iot.iot_android.service.UserService;
+import ar.edu.itba.iot.iot_android.service.callbacks.LogInCallback;
 import ar.edu.itba.iot.iot_android.view.DrawerHeader;
 import ar.edu.itba.iot.iot_android.view.DrawerMenuItem;
 import ar.edu.itba.iot.iot_android.view.MyAdapter;
@@ -29,12 +36,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String[] devicesNames = new String[7];
     private String[] targetTemps = new String[7];
     private String[] currentTemps = new String[7];
-    private final DeviceService deviceService = new DeviceService();
-    private final UserService userService = new UserService();
-
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
+    private UserController userController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         setupDrawer();
 
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
 
@@ -87,18 +90,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View v = this.findViewById(R.id.addDevice);
         v.setOnClickListener(this);
 
-
-
-
         mAdapter = new MyAdapter(devicesNames, currentTemps, targetTemps);
         mRecyclerView.setAdapter(mAdapter);
 
+        //aca empieza la logica
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        userController = new UserController(new User("julian", "julian"), prefs);
+
+        userController.login();
+
+
+
     }
-
-    public void setNewToken(String token){
-
-    }
-
 
     // Menu icons are inflated just as they were with actionbar
     @Override

@@ -12,12 +12,29 @@ public class User {
 
     private Collection<Device> devices;
 
+    private String userName;
+
+    private String password;
+
+    public User(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
+
     public String getToken() {
         return token;
     }
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public Collection<Device> getDevices() {

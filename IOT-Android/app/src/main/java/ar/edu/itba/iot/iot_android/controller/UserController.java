@@ -3,6 +3,9 @@ package ar.edu.itba.iot.iot_android.controller;
 import android.content.SharedPreferences;
 
 import ar.edu.itba.iot.iot_android.model.User;
+import ar.edu.itba.iot.iot_android.service.UserService;
+import ar.edu.itba.iot.iot_android.service.callbacks.LogInCallback;
+import okhttp3.Callback;
 
 /**
  * Created by julianrodrigueznicastro on 10/31/17.
@@ -10,6 +13,7 @@ import ar.edu.itba.iot.iot_android.model.User;
 
 public class UserController {
 
+    private UserService userService = new UserService();
     private final User user;
     private final SharedPreferences sp;
 
@@ -18,13 +22,12 @@ public class UserController {
         this.sp = sp;
     }
 
-    public UserController(SharedPreferences sp) {
-        this.sp = sp;
-        user = new User();
-    }
-
     public User getUser() {
         return user;
+    }
+
+    public void login(){
+        userService.logIn(user.getUserName(), user.getPassword(), new LogInCallback(this));
     }
 
     public void setNewToken(String token){

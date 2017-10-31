@@ -1,6 +1,7 @@
 package ar.edu.itba.iot.iot_android.service.callbacks;
 
 import android.app.Activity;
+import android.util.Log;
 
 import java.io.IOException;
 
