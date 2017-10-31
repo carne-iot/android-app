@@ -49,6 +49,14 @@ public class UserService {
         }
     }
 
+    public void getDevices(Long userId, String token, Callback callback){
+        try {
+            httpService.get(baseURL + "/users/" + userId + "/devices" , token, callback);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void getUserByUserName(String userName, String password, GetUserByUserNameCallback getUserByUserNameCallback) {
     }
 }

@@ -2,12 +2,10 @@ package ar.edu.itba.iot.iot_android.model;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Observable;
 
-/**
- * Created by julianrodrigueznicastro on 10/31/17.
- */
 
-public class User {
+public class User extends Observable{
 
     private String token = null;
 
@@ -17,7 +15,7 @@ public class User {
 
     private String password;
 
-    private Long id = new Long(-1);
+    private Long id = Long.valueOf(-1);
 
     private String logoutURL = null;
 
@@ -38,6 +36,8 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+        this.setChanged();
+        this.notifyObservers();
     }
 
     public String getUserName() {

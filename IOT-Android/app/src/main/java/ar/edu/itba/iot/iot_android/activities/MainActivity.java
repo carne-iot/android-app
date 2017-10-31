@@ -16,6 +16,9 @@ import ar.edu.itba.iot.iot_android.R;
 
 import com.mindorks.placeholderview.PlaceHolderView;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import ar.edu.itba.iot.iot_android.controller.UserController;
 import ar.edu.itba.iot.iot_android.model.User;
 import ar.edu.itba.iot.iot_android.view.DrawerHeader;
@@ -33,6 +36,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
     private UserController userController;
+
+    private Observer userChange = new Observer() {
+        @Override
+        public void update(Observable o, Object arg) {
+            userController.getDevices();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +98,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //aca empieza la logica
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        userController = new UserController(new User("julian", "julian"), prefs);
+        User user = new User("julian", "julian");
+        user.addObserver(userChange);
+
+        userController = new UserController(user, prefs);
 
         userController.login();
 

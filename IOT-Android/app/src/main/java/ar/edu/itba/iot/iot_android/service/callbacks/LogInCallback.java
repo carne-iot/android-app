@@ -10,15 +10,12 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-/**
- * Created by julianrodrigueznicastro on 10/31/17.
- */
 
-public class LoginCallback implements Callback {
+public class LogInCallback implements Callback {
 
     private final UserController userController;
 
-    public LoginCallback(UserController userController) {
+    public LogInCallback(UserController userController) {
         this.userController = userController;
     }
 
