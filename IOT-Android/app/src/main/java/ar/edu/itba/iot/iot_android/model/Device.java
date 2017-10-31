@@ -8,18 +8,23 @@ public class Device {
 
     private boolean willTurnOver = false;
 
-    public Device(double currentTemperature, double targetTemperature, boolean willTurnOver) {
+    private final String id;
+
+    public Device(String id, double currentTemperature, double targetTemperature, boolean willTurnOver) {
+        this.id = id;
         this.currentTemperature = currentTemperature;
         this.targetTemperature = targetTemperature;
         this.willTurnOver = willTurnOver;
     }
 
-    public Device(double targetTemperature, boolean willTurnOver) {
+    public Device(String id, double targetTemperature, boolean willTurnOver) {
+        this.id = id;
         this.targetTemperature = targetTemperature;
         this.willTurnOver = willTurnOver;
     }
 
-    public Device(double targetTemperature) {
+    public Device(String id, double targetTemperature) {
+        this.id = id;
         this.targetTemperature = targetTemperature;
     }
 
@@ -37,5 +42,13 @@ public class Device {
 
     public void setTargetTemperature(double targetTemperature) {
         this.targetTemperature = targetTemperature;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setWillTurnOver(boolean willTurnOver) {
+        this.willTurnOver = willTurnOver;
     }
 }

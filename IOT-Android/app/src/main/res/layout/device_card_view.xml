@@ -64,6 +64,19 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/text2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/device_name"
+                    android:gravity="center"
+                    android:paddingRight="60dp"
+                    android:paddingTop="15dp"
+                    android:text="Target:"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/target_temperature"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -78,18 +91,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/text2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/device_name"
-            android:gravity="center"
-            android:paddingRight="60dp"
-            android:paddingTop="15dp"
-            android:text="Target:"
-            android:textSize="14sp"
-            android:textStyle="bold" />
     </RelativeLayout>
 
 

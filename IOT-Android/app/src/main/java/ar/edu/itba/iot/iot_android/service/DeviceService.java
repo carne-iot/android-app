@@ -4,43 +4,41 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashSet;
 
 import ar.edu.itba.iot.iot_android.model.Device;
+import ar.edu.itba.iot.iot_android.utils.JSONParser;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/**
- * Created by julianrodrigueznicastro on 10/29/17.
- */
-
 public class DeviceService {
 
-    private final OkHttpClient client = new OkHttpClient();
-
     private final String baseURL;
+    private HTTPService httpService = new HTTPService();
 
     public DeviceService(String baseURL) {
         this.baseURL = baseURL;
     }
 
     public DeviceService() {
-        baseURL = "https://7a79837b-ef74-4e99-97cf-6d2fbf4f013a.mock.pstmn.io";
+        baseURL = "http://server.carne-iot.itba.bellotapps.com";
+    }
+
+    public Collection<Device> getDevices() {
+        try {
+            Response response = httpService.get(baseURL + "/devices");
+            return JSONParser.parseDevices(response.body().string());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new HashSet<>();
     }
 
     //TODO
-    public Collection<Device> getDevices() throws IOException{
-        Request request = new Request.Builder()
-                .url(baseURL + "/devices")
-                .build();
-
-        Response response = client.newCall(request).execute();
-        Log.d("HTTP", String.valueOf(response.code()));
-        Log.d("HTTP",response.body().string());
-        return null;
-    }
-
-    public Device getDevice(){
-        return null;
+    public boolean registerDevice(String id, String userid){
+        return false;
     }
 }
