@@ -44,9 +44,11 @@ public class UserService {
     public Device getDevice(Long userId, String deviceId, String token){
         try {
             Response response = httpService.get(baseURL + "/users/" + userId + "/devices/" + deviceId);
+            Log.d("device:", response.body().toString());
             return JSONParser.parseDevice(response.body().string());
         } catch (IOException e) {
             e.printStackTrace();
+            Log.d("fail:", "no anda");
         }
         return null;
     }

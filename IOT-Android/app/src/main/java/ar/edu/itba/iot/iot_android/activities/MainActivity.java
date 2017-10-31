@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import ar.edu.itba.iot.iot_android.R;
@@ -16,6 +17,7 @@ import ar.edu.itba.iot.iot_android.R;
 import com.mindorks.placeholderview.PlaceHolderView;
 
 import ar.edu.itba.iot.iot_android.service.DeviceService;
+import ar.edu.itba.iot.iot_android.service.UserService;
 import ar.edu.itba.iot.iot_android.view.DrawerHeader;
 import ar.edu.itba.iot.iot_android.view.DrawerMenuItem;
 import ar.edu.itba.iot.iot_android.view.MyAdapter;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String[] targetTemps = new String[7];
     private String[] currentTemps = new String[7];
     private final DeviceService deviceService = new DeviceService();
+    private final UserService userService = new UserService();
 
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawer;
@@ -83,6 +86,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         targetTemps[6] = "72°C";
         View v = this.findViewById(R.id.addDevice);
         v.setOnClickListener(this);
+
+        String token = userService.logIn("julian", "julian");
+        Log.d("token", token);
+        userService.getDevice(new Long(4), "MTIzNDEyMzQ", token);
+
 
         mAdapter = new MyAdapter(devicesNames, currentTemps, targetTemps);
         mRecyclerView.setAdapter(mAdapter);
