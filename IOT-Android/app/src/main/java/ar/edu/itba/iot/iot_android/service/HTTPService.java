@@ -2,6 +2,7 @@ package ar.edu.itba.iot.iot_android.service;
 
 import java.io.IOException;
 
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,42 +22,38 @@ public class HTTPService {
 
     }
 
-    Response post(String url, String json) throws IOException {
+    public void post(String url, String json, Callback callback) throws IOException {
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
                 .build();
-        Response response = client.newCall(request).execute();
-        return response;
+        client.newCall(request).enqueue(callback);
     }
 
-    Response post(String url, String json, String token) throws IOException {
+    public void post(String url, String json, String token, Callback callback) throws IOException {
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("x-token", token)
                 .post(body)
                 .build();
-        Response response = client.newCall(request).execute();
-        return response;
+        client.newCall(request).enqueue(callback);
     }
 
-    Response get(String url) throws IOException {
+    public void get(String url, Callback callback) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-        Response response = client.newCall(request).execute();
-        return response;
+        client.newCall(request).enqueue(callback);
     }
 
-    Response get(String url, String token) throws IOException {
+    public void get(String url, String token, Callback callback) throws IOException {
         Request request = new Request.Builder()
                 .addHeader("x-token", token)
                 .url(url)
                 .build();
-        Response response = client.newCall(request).execute();
-        return response;
+        client.newCall(request).enqueue(callback);
     }
 
 }

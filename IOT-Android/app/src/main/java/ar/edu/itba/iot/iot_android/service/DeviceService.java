@@ -27,10 +27,9 @@ public class DeviceService {
         baseURL = "http://server.carne-iot.itba.bellotapps.com";
     }
 
-    public Collection<Device> getDevices() {
+    public Collection<Device> getDevices(Callback callback) {
         try {
-            Response response = httpService.get(baseURL + "/devices");
-            return JSONParser.parseDevices(response.body().string());
+            httpService.get(baseURL + "/devices", callback);
         } catch (IOException e) {
             e.printStackTrace();
         }

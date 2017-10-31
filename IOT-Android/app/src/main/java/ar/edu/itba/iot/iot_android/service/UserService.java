@@ -30,22 +30,18 @@ public class UserService {
         baseURL = "http://server.carne-iot.itba.bellotapps.com";
     }
 
-    public String logIn(String username, String password) {
+    public void logIn(String username, String password, Callback callback) {
         try {
             //TODO user JSON lib
-            Response response = httpService.post(baseURL + "/auth/login", "{\"username\":\"julian\",\"password\":\"julian\"}");
-            return response.header("x-token");
+            httpService.post(baseURL + "/auth/login", "{\"username\":\"julian\",\"password\":\"julian\"}", callback);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
-    public Device getDevice(Long userId, String deviceId, String token){
+    public Device getDevice(Long userId, String deviceId, String token, Callback callback){
         try {
-            Response response = httpService.get(baseURL + "/users/" + userId + "/devices/" + deviceId);
-            Log.d("device:", response.body().toString());
-            return JSONParser.parseDevice(response.body().string());
+            httpService.get(baseURL + "/users/" + userId + "/devices/" + deviceId, callback);
         } catch (IOException e) {
             e.printStackTrace();
             Log.d("fail:", "no anda");

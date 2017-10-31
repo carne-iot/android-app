@@ -87,13 +87,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View v = this.findViewById(R.id.addDevice);
         v.setOnClickListener(this);
 
-        String token = userService.logIn("julian", "julian");
-        Log.d("token", token);
-        userService.getDevice(new Long(4), "MTIzNDEyMzQ", token);
+
 
 
         mAdapter = new MyAdapter(devicesNames, currentTemps, targetTemps);
         mRecyclerView.setAdapter(mAdapter);
+
+    }
+
+    public void setNewToken(String token){
 
     }
 
