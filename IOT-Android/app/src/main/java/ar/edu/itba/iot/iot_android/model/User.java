@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 
-
 public class User extends Observable{
 
     private String token = null;
@@ -35,8 +34,6 @@ public class User extends Observable{
         this.password = password;
         this.id = id;
     }
-
-
 
     public User(UserAux userAux){
         this.userName = userAux.getUsername();
