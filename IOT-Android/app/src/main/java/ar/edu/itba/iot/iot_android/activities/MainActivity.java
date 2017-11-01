@@ -79,6 +79,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        user = new User("julian", "julian", Long.valueOf(4));
+        user.addObserver(userChange);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        userController = new UserController(user, prefs, deviceChange);
+
+        userController.login();
+
         mDrawer = (DrawerLayout)findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView)findViewById(R.id.drawerView);
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -98,14 +107,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View v = this.findViewById(R.id.addDevice);
         v.setOnClickListener(this);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        user = new User("julian", "julian", Long.valueOf(4));
-        user.addObserver(userChange);
 
-        userController = new UserController(user, prefs, deviceChange);
 
-        userController.login();
 
         //TODO HORRIBLE MALISIMO PERO QUIERO DORMIR
         while (!hasFinishedLoading);
@@ -150,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupDrawer(){
         mDrawerView
-                .addView(new DrawerHeader())
+                .addView(new DrawerHeader(userController))
                 .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE))
                 .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_MESSAGE))
                 .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_NOTIFICATIONS))
