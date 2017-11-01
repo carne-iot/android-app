@@ -48,7 +48,7 @@ public class DrawerMenuItem {
     private UserController userController;
 
     public DrawerMenuItem(Context context, int menuPosition, UserController userController) {
-        userController = userController;
+        this.userController = userController;
         mContext = context;
         mMenuPosition = menuPosition;
     }
@@ -106,6 +106,7 @@ public class DrawerMenuItem {
                 break;
             case DRAWER_MENU_ITEM_LOGOUT:
                 Toast.makeText(mContext, "Logout", Toast.LENGTH_SHORT).show();
+                userController.signOut(userController.getUser());
                 if(mCallBack != null)mCallBack.onLogoutMenuSelected();
                 break;
             case DRAWER_MENU_SIGNIN:
@@ -156,6 +157,6 @@ public class DrawerMenuItem {
     }
 
     public void onLogoutMenuSelected(){
-        userController.signOut(userController.getUser());
+
     }
 }

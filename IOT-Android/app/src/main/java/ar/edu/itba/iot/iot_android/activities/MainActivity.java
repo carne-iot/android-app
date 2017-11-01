@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupDrawer(){
 
-        if(userController.getUser() != null){
+        if(userController.isLoggedIn()){
             mDrawerView
                     .addView(new DrawerHeader(userController))
                     .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE, userController))

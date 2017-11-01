@@ -1,6 +1,7 @@
 package ar.edu.itba.iot.iot_android.controller;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.Observer;
 
@@ -19,6 +20,8 @@ public class UserController {
     private final User user;
     private final SharedPreferences sp;
     private final Observer deviceChange;
+    //TODO sacar kbeza
+    private boolean isLoggedIn = true;
 
     public UserController(User user, SharedPreferences sp, Observer deviceChange) {
         this.user = user;
@@ -58,8 +61,15 @@ public class UserController {
     }
 
     public void signOut(User user){
-        userService.logOut(user, new LogOutCallback());
-        user = null;
+        userService.logOut(user, new LogOutCallback(this));
+    }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
     }
 }
 

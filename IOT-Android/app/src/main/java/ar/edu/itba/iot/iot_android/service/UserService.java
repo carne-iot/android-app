@@ -65,17 +65,17 @@ public class UserService  implements Serializable {
             httpService.put(baseURL + "/users/" + String.valueOf(userId) + "/devices/" + deviceId, "", token, callback);
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d("fail:", "no anda");
+            Log.d("Fail:", "Could not register device");
         }
     }
 
     public void logOut(User user, Callback callback){
 
         try {
-            httpService.post(user.getLogoutURL(), user.getToken(), callback);
+            httpService.post(user.getLogoutURL(),"", user.getToken(), callback);
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d("fail:", "Could not log out");
+            Log.d("Fail:", "Could not log out");
         }
 
     }
