@@ -2,6 +2,8 @@ package ar.edu.itba.iot.iot_android.model;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 
 
@@ -9,7 +11,7 @@ public class User extends Observable{
 
     private String token = null;
 
-    private Collection<Device> devices =  new HashSet<>();
+    private List<Device> devices =  new LinkedList<>();
 
     private String userName;
 
@@ -48,11 +50,11 @@ public class User extends Observable{
         return password;
     }
 
-    public Collection<Device> getDevices() {
+    public List<Device> getDevices() {
         return devices;
     }
 
-    public void setDevices(Collection<Device> devices) {
+    public void setDevices(List<Device> devices) {
         this.devices = devices;
     }
 

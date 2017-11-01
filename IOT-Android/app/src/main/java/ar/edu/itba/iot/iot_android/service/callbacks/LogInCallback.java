@@ -27,6 +27,7 @@ public class LogInCallback implements Callback {
     @Override
     public void onResponse(Call call, Response response) throws IOException {
         userController.getUser().setToken(response.header("x-token"));
+        Log.d("token", response.header("x-token"));
         userController.getUser().setLogoutURL(response.header("x-logout-url"));
     }
 }

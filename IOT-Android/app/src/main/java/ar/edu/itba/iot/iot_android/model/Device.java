@@ -1,6 +1,8 @@
 package ar.edu.itba.iot.iot_android.model;
 
-public class Device {
+import java.util.Observable;
+
+public class Device extends Observable{
 
     private double currentTemperature = -1;
 
@@ -54,5 +56,7 @@ public class Device {
 
     public void setCurrentTemperature(double currentTemperature) {
         this.currentTemperature = currentTemperature;
+        this.setChanged();
+        this.notifyObservers();
     }
 }

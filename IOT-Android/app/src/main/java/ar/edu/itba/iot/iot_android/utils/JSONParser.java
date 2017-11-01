@@ -1,6 +1,7 @@
 package ar.edu.itba.iot.iot_android.utils;
 
 import java.util.Collection;
+import java.util.List;
 
 import ar.edu.itba.iot.iot_android.model.Device;
 
@@ -11,7 +12,7 @@ import ar.edu.itba.iot.iot_android.model.Device;
 public class JSONParser {
 
     //TODO
-    public static Collection<Device> parseDevices(String json){
+    public static List<Device> parseDevices(String json){
         return null;
     }
 

@@ -2,6 +2,8 @@ package ar.edu.itba.iot.iot_android.controller;
 
 import android.content.SharedPreferences;
 
+import java.util.Observer;
+
 import ar.edu.itba.iot.iot_android.model.Device;
 import ar.edu.itba.iot.iot_android.model.User;
 import ar.edu.itba.iot.iot_android.service.UserService;
@@ -16,10 +18,12 @@ public class UserController {
     private UserService userService = new UserService();
     private final User user;
     private final SharedPreferences sp;
+    private final Observer deviceChange;
 
-    public UserController(User user, SharedPreferences sp) {
+    public UserController(User user, SharedPreferences sp, Observer deviceChange) {
         this.user = user;
         this.sp = sp;
+        this.deviceChange = deviceChange;
     }
 
     public User getUser() {
@@ -38,7 +42,7 @@ public class UserController {
 
     public void getDevices(){
         //while((user.getToken() == null));
-        userService.getDevices(user.getId(), user.getToken(), new GetDevicesCallback(this.user));
+        userService.getDevices(user.getId(), user.getToken(), new GetDevicesCallback(this.user, deviceChange));
     }
 
     public void getFullUserData(){
