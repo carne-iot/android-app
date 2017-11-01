@@ -17,6 +17,8 @@ import ar.edu.itba.iot.iot_android.R;
 
 import com.mindorks.placeholderview.PlaceHolderView;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -32,9 +34,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String[] devicesNames = null;
-    private String[] targetTemps = null;
-    private String[] currentTemps = null;
+    private List<String> devicesNames = null;
+    private List<String> targetTemps = null;
+    private List<String> currentTemps = null;
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
@@ -75,9 +77,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             List<Device> devices = user.getDevices();
 
             int index = devices.indexOf(device);
-            devicesNames[index] = id;
-            currentTemps[index] = Double.toString(temperature);
-            targetTemps[index] = Double.toString(targetTemperature);
+            devicesNames.add(index, id);
+            currentTemps.add(index, Double.toString(temperature));
+            targetTemps.add(index, Double.toString(targetTemperature));
         }
     };
 
@@ -140,16 +142,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void populateAdapter() {
         int n = user.getDevices().size();
 
-        devicesNames = new String[n];
-        targetTemps = new String[n];
-        currentTemps = new String[n];
+        devicesNames = new ArrayList<>();
+        targetTemps = new ArrayList<>();
+        currentTemps = new ArrayList<>();
 
         int i = 0;
 
         for(Device d: user.getDevices()){
-            devicesNames[i] = d.getNickname();
-            currentTemps[i] = String.format("%.1f", d.getTemperature());
-            targetTemps[i] = String.format("%.1f", d.getTargetTemperature());
+            devicesNames.add(i, d.getNickname());
+            currentTemps.add(i, String.format("%.1f", d.getTemperature()));
+            targetTemps.add(i, String.format("%.1f", d.getTargetTemperature()));
         }
         hasFinishedLoading = true;
     }
