@@ -3,6 +3,7 @@ package ar.edu.itba.iot.iot_android.service;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -14,7 +15,7 @@ import okhttp3.RequestBody;
  * Created by julianrodrigueznicastro on 10/30/17.
  */
 
-public class HTTPService {
+public class HTTPService implements Serializable{
 
     private final OkHttpClient client = new OkHttpClient();
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");

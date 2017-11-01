@@ -3,11 +3,13 @@ package ar.edu.itba.iot.iot_android.service;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashSet;
 
 import ar.edu.itba.iot.iot_android.model.Device;
 import ar.edu.itba.iot.iot_android.service.callbacks.GetUserByUserNameCallback;
 import ar.edu.itba.iot.iot_android.utils.JSONParser;
+import ar.edu.itba.iot.iot_android.utils.SerializableObserver;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -18,7 +20,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.BufferedSink;
 
-public class UserService {
+public class UserService  implements Serializable {
 
     private final String baseURL;
     private final HTTPService httpService = new HTTPService();

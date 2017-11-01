@@ -1,12 +1,13 @@
 package ar.edu.itba.iot.iot_android.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 
-public class User extends Observable{
+public class User extends Observable {
 
     private String token = null;
 
@@ -119,7 +120,7 @@ public class User extends Observable{
     }
 
     public void setDevices(Collection<Device> devices){
-        devices.clear();
+        this.devices.clear();
         addDevices(devices);
     }
 

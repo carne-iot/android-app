@@ -1,5 +1,6 @@
 package ar.edu.itba.iot.iot_android.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Toolbar mToolbar;
     private UserController userController;
     private User user;
+    private boolean hasFinishedLoading = false;
 
     private Observer userChange = new Observer() {
         @Override
@@ -105,13 +107,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         userController.login();
 
+        //TODO HORRIBLE MALISIMO PERO QUIERO DORMIR
+        while (!hasFinishedLoading);
 
-        /*Device device = new Device("lalala", 30);
-        device.addObserver(deviceChange);
-        device.setTemperature(15.34);*/
-
-
-
+        mAdapter = new MyAdapter(devicesNames, currentTemps, targetTemps);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
@@ -125,7 +125,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-
+        Intent intent = new Intent(this, RegisterDeviceActivity.class);
+        intent.putExtra("token", user.getToken());
+        intent.putExtra("userId", user.getId());
+        startActivity(intent);
     }
 
     private void populateAdapter() {
@@ -139,15 +142,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for(Device d: user.getDevices()){
             devicesNames[i] = d.getNickname();
-            currentTemps[i] = String.valueOf(d.getTemperature());
-            targetTemps[i] = String.valueOf(d.getTargetTemperature());
+            currentTemps[i] = String.format("%.1f", d.getTemperature());
+            targetTemps[i] = String.format("%.1f", d.getTargetTemperature());
         }
-
-
-
-        mAdapter = new MyAdapter(devicesNames, currentTemps, targetTemps);
-        mRecyclerView.setAdapter(mAdapter);
-
+        hasFinishedLoading = true;
     }
 
     private void setupDrawer(){

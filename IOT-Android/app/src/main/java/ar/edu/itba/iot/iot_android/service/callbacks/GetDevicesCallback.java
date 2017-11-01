@@ -3,6 +3,7 @@ package ar.edu.itba.iot.iot_android.service.callbacks;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observer;
@@ -32,9 +33,8 @@ public class GetDevicesCallback implements Callback {
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        Log.d("list devices", "DEVICES: " + response.body().string());
-        String resp = response.body().string();
-        user.setDevices(JSONParser.parseDevices(resp));
+        Collection<Device> newDevices = JSONParser.parseDevices(response.body().string());
+        user.setDevices(newDevices);
 
         for (Device device: user.getDevices()) {
             device.addObserver(observer);

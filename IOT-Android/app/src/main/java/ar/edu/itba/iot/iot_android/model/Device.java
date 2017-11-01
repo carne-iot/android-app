@@ -1,8 +1,10 @@
 package ar.edu.itba.iot.iot_android.model;
 
+import java.io.Serializable;
 import java.util.Observable;
+import java.util.jar.Manifest;
 
-public class Device extends Observable{
+public class Device extends Observable implements Serializable{
 
     private double temperature = -1;
 
@@ -15,9 +17,13 @@ public class Device extends Observable{
     private String nickname;
 
     public Device(DeviceAux dev) {
-        temperature = dev.getTemperature();
+        this.targetTemperature = (Math.random() * 70 + 1);
+        if(dev.getTemperature() != null) temperature = dev.getTemperature();
+        else temperature = Math.random() * 49 + 1;
         id = dev.getId();
-        nickname = dev.getNickname();
+        if(dev.getNickname() != null) nickname = dev.getNickname();
+        else nickname = "device";
+
     }
 
     public Device(String id, double temperature, double targetTemperature, boolean willTurnOver) {
