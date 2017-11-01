@@ -3,6 +3,8 @@ package ar.edu.itba.iot.iot_android.service.callbacks;
 import java.io.IOException;
 
 import ar.edu.itba.iot.iot_android.controller.UserController;
+import ar.edu.itba.iot.iot_android.model.User;
+import ar.edu.itba.iot.iot_android.utils.JSONParser;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -26,6 +28,10 @@ public class GetUserByUserNameCallback implements Callback {
     @Override
     public void onResponse(Call call, Response response) throws IOException {
         //TODO no anda el endpoint y no se sabe como devuelve
-        userController.getUser().setId(Long.valueOf(response.header("")));
+        User newUser =  JSONParser.parseUser(response.body().string());
+        userController.getUser().setId(newUser.getId());
+        userController.getUser().setFullName(newUser.getFullName());
+        userController.getUser().setEmail(newUser.getEmail());
+
     }
 }

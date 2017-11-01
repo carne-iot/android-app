@@ -1,12 +1,18 @@
 package ar.edu.itba.iot.iot_android.model;
 
 
+import java.util.Set;
+
 public class UserAux {
+
+    private Long id;
     private String username;
     private String password;
-    private String birthday;
+    private String birthDate;
     private String email;
     private String fullName;
+    private String[] roles;
+    private String locationUrl;
 
     public String getUsername() {
         return username;
@@ -24,12 +30,12 @@ public class UserAux {
         this.password = password;
     }
 
-    public String getBirthday() {
-        return birthday;
+    public String getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getEmail() {
@@ -46,6 +52,30 @@ public class UserAux {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String[] getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String[] roles) {
+        this.roles = roles;
+    }
+
+    public String getLocationUrl() {
+        return locationUrl;
+    }
+
+    public void setLocationUrl(String locationUrl) {
+        this.locationUrl = locationUrl;
     }
 }
 

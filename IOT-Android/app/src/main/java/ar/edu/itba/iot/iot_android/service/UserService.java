@@ -57,6 +57,11 @@ public class UserService {
         }
     }
 
-    public void getUserByUserName(String userName, String password, GetUserByUserNameCallback getUserByUserNameCallback) {
+    public void getUserByUserName(String userName, String token, GetUserByUserNameCallback getUserByUserNameCallback) {
+        try {
+            httpService.get(baseURL + "/users/username/" + userName, token, getUserByUserNameCallback);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -12,7 +12,6 @@ import ar.edu.itba.iot.iot_android.service.callbacks.GetDevicesCallback;
 import ar.edu.itba.iot.iot_android.service.callbacks.GetUserByUserNameCallback;
 import ar.edu.itba.iot.iot_android.service.callbacks.LogInCallback;
 
-
 public class UserController {
 
     private UserService userService = new UserService();
@@ -46,7 +45,7 @@ public class UserController {
     }
 
     public void getFullUserData(){
-        userService.getUserByUserName(user.getUserName(),user.getToken(), new GetUserByUserNameCallback(this));
+        userService.getUserByUserName(user.getUserName(), user.getToken(), new GetUserByUserNameCallback(this));
     }
 }
 

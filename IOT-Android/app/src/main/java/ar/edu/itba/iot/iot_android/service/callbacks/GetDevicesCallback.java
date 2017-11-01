@@ -9,6 +9,7 @@ import java.util.Observer;
 
 import ar.edu.itba.iot.iot_android.model.Device;
 import ar.edu.itba.iot.iot_android.model.User;
+import ar.edu.itba.iot.iot_android.utils.JSONParser;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -32,23 +33,11 @@ public class GetDevicesCallback implements Callback {
     @Override
     public void onResponse(Call call, Response response) throws IOException {
         Log.d("list devices", "DEVICES: " + response.body().string());
-//        String resp = response.body().string();
-//        user.setDevices(JSONParser.parseDevices(resp));
+        String resp = response.body().string();
+        user.setDevices(JSONParser.parseDevices(resp));
 
-        List<Device> devices = new LinkedList<>();
-
-        for (int i = 0; i < 5; i++) {
-            Device device = new Device("miDevice" + i,
-                    56.7 + i, true);
-            devices
-                    .add(device);
+        for (Device device: user.getDevices()) {
             device.addObserver(observer);
-        }
-        user.setDevices(devices);
-
-        for (int i = 0; i < 5; i++) {
-            Device device = devices.get(i);
-            device.setTemperature(20.1 + i);
         }
 
         Log.d("devices", "i got my devices");

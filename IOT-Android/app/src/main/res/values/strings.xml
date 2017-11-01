@@ -94,4 +94,5 @@
     <string name="title_activity_device_setup">DeviceSetupActivity</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Close</string>
+    <string name="title_activity_register_device">RegisterDeviceActivity</string>
 </resources>

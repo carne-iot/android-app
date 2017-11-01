@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String[] devicesNames = new String[7];
-    private String[] targetTemps = new String[7];
-    private String[] currentTemps = new String[7];
+    private String[] devicesNames = null;
+    private String[] targetTemps = null;
+    private String[] currentTemps = null;
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
@@ -43,13 +43,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Observer userChange = new Observer() {
         @Override
         public void update(Observable o, Object arg) {
-            userController.getDevices();
+            if(((String) arg).equals("token")) userController.getFullUserData();
+            else if(((String) arg).equals("id")) userController.getDevices();
+            else if(((String) arg).equals("deviceList")) populateAdapter();
         }
     };
 
     private Observer deviceChange = new Observer() {
         @Override
         public void update(Observable o, Object arg) {
+            if(devicesNames == null || targetTemps == null || currentTemps == null) return;
+
             Device device = (Device)o;
             String id = device.getId();
             double temperature = device.getTemperature();
@@ -58,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("new temperature", id + ": " + temperature);
 
             List<Device> devices = user.getDevices();
-
-
 
             int index = devices.indexOf(device);
             devicesNames[index] = id;
@@ -90,36 +92,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        devicesNames[0] = "Device 1";
-        devicesNames[1] = "Device 2";
-        devicesNames[2] = "Device 3";
-        devicesNames[3] = "Device 4";
-        devicesNames[4] = "Device 5";
-        devicesNames[5] = "Device 6";
-        devicesNames[6] = "Device 7";
-
-        currentTemps[0] = "45°C";
-        currentTemps[1] = "30°C";
-        currentTemps[2] = "24°C";
-        currentTemps[3] = "25°C";
-        currentTemps[4] = "26°C";
-        currentTemps[5] = "35°C";
-        currentTemps[6] = "47°C";
-
-        targetTemps[0] = "70°C";
-        targetTemps[1] = "60°C";
-        targetTemps[2] = "56°C";
-        targetTemps[3] = "65°C";
-        targetTemps[4] = "64°C";
-        targetTemps[5] = "75°C";
-        targetTemps[6] = "72°C";
         View v = this.findViewById(R.id.addDevice);
         v.setOnClickListener(this);
 
-        mAdapter = new MyAdapter(devicesNames, currentTemps, targetTemps);
-        mRecyclerView.setAdapter(mAdapter);
-
-        //aca empieza la logica
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         user = new User("julian", "julian");
@@ -128,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         userController = new UserController(user, prefs, deviceChange);
 
         userController.login();
+
 
         /*Device device = new Device("lalala", 30);
         device.addObserver(deviceChange);
@@ -150,6 +126,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void populateAdapter() {
+        int n = user.getDevices().size();
+
+        devicesNames = new String[n];
+        targetTemps = new String[n];
+        currentTemps = new String[n];
+
+        int i = 0;
+
+        for(Device d: user.getDevices()){
+            devicesNames[i] = d.getNickname();
+            currentTemps[i] = String.valueOf(d.getTemperature());
+            targetTemps[i] = String.valueOf(d.getTargetTemperature());
+        }
+
+
+
+        mAdapter = new MyAdapter(devicesNames, currentTemps, targetTemps);
+        mRecyclerView.setAdapter(mAdapter);
+
+    }
 
     private void setupDrawer(){
         mDrawerView

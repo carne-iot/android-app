@@ -40,6 +40,8 @@ public class User extends Observable{
 
     public User(UserAux userAux){
         this.userName = userAux.getUsername();
+        this.id = userAux.getId();
+        this.email = userAux.getEmail();
         this.fullName = userAux.getUsername();
         this.email = userAux.getEmail();
     }
@@ -51,7 +53,7 @@ public class User extends Observable{
     public void setToken(String token) {
         this.token = token;
         this.setChanged();
-        this.notifyObservers();
+        this.notifyObservers("token");
     }
 
     public String getUserName() {
@@ -73,8 +75,11 @@ public class User extends Observable{
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
+        this.setChanged();
+        this.notifyObservers("id");
     }
 
     public void setLogoutURL(String logoutURL) {
@@ -109,4 +114,17 @@ public class User extends Observable{
     public String getLogoutURL() {
         return logoutURL;
     }
+
+    public void addDevices(Collection<Device> devices){
+        this.devices.addAll(devices);
+        this.setChanged();
+        this.notifyObservers("deviceList");
+    }
+
+    public void setDevices(Collection<Device> devices){
+        devices.clear();
+        addDevices(devices);
+    }
+
+
 }
