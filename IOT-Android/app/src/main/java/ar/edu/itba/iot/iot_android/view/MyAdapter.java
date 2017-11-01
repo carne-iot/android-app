@@ -6,13 +6,15 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 import ar.edu.itba.iot.iot_android.R;
 
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    private String[] devicesNames;
-    private String[] currentTemps;
-    private String[] targetTemps;
+    private List<String> devicesNames;
+    private List<String> currentTemps;
+    private List<String> targetTemps;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -33,7 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(String[] devicesNames, String[] currentTemps, String[] targetTemps) {
+    public MyAdapter(List<String> devicesNames, List<String> currentTemps, List<String> targetTemps) {
         this.devicesNames = devicesNames;
         this.currentTemps = currentTemps;
         this.targetTemps = targetTemps;
@@ -59,15 +61,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.nameTextView.setText(devicesNames[position]);
-        holder.currTempTextView.setText(currentTemps[position]);
-        holder.targetTempTextView.setText(targetTemps[position]);
+        holder.nameTextView.setText(devicesNames.get(position));
+        holder.currTempTextView.setText(currentTemps.get(position));
+        holder.targetTempTextView.setText(targetTemps.get(position));
 
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return devicesNames.length;
+        return devicesNames.size();
     }
 }
