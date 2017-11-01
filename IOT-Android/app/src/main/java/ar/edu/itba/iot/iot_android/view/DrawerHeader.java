@@ -9,6 +9,9 @@ import com.mindorks.placeholderview.annotations.NonReusable;
 import com.mindorks.placeholderview.annotations.Resolve;
 import com.mindorks.placeholderview.annotations.View;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import ar.edu.itba.iot.iot_android.R;
 import ar.edu.itba.iot.iot_android.controller.UserController;
 
@@ -30,13 +33,24 @@ public class DrawerHeader {
 
     private final UserController userController;
 
+    private Observer userChange = new Observer() {
+        @Override
+        public void update(Observable o, Object arg) {
+            if(((String) arg).equals("fullName"))
+                nameTxt.setText(userController.getUser().getFullName());
+            else if(((String) arg).equals("email"))
+                emailTxt.setText(userController.getUser().getEmail());
+        }
+    };
+
     public DrawerHeader(UserController userController) {
         this.userController = userController;
     }
 
     @Resolve
     private void onResolved() {
-        nameTxt.setText(userController.getUser().getFullName());
-        emailTxt.setText(userController.getUser().getEmail());
+        nameTxt.setText("");
+        emailTxt.setText(" ");
+        userController.getUser().addObserver(userChange);
     }
 }

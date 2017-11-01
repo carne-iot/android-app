@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+
+
     private Observer deviceChange = new Observer() {
         @Override
         public void update(Observable o, Object arg) {
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         user = new User("julian", "julian", Long.valueOf(4));
+
         user.addObserver(userChange);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -106,10 +109,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         View v = this.findViewById(R.id.addDevice);
         v.setOnClickListener(this);
-
-
-
-
 
         //TODO HORRIBLE MALISIMO PERO QUIERO DORMIR
         while (!hasFinishedLoading);
