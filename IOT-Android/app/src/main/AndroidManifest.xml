@@ -3,6 +3,9 @@
     package="ar.edu.itba.iot.iot_android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -21,8 +24,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.RegisterDeviceActivity"
-            android:label="@string/title_activity_register_device"
+            android:name=".activities.ScanActivity"
+            android:label="Register a Device"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme">
             <meta-data

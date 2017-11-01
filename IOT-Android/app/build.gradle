@@ -36,4 +36,10 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-core:2.7.3'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.3'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.3'
+    compile(name:'ScanditBarcodeScanner', ext:'aar')
+}
+repositories {
+    flatDir{
+        dirs 'libs/scandit-barcodescanner-android_5.2.1/ScanditSDK'
+    }
 }

@@ -4,13 +4,11 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Observer;
 
 import ar.edu.itba.iot.iot_android.model.Device;
 import ar.edu.itba.iot.iot_android.model.User;
-import ar.edu.itba.iot.iot_android.utils.JSONParser;
+import ar.edu.itba.iot.iot_android.utils.JSONManager;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -33,7 +31,7 @@ public class GetDevicesCallback implements Callback {
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        Collection<Device> newDevices = JSONParser.parseDevices(response.body().string());
+        Collection<Device> newDevices = JSONManager.parseDevices(response.body().string());
         user.setDevices(newDevices);
 
         for (Device device: user.getDevices()) {

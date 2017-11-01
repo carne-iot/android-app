@@ -17,9 +17,11 @@ import ar.edu.itba.iot.iot_android.R;
 
 import com.mindorks.placeholderview.PlaceHolderView;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 import ar.edu.itba.iot.iot_android.controller.UserController;
 import ar.edu.itba.iot.iot_android.model.Device;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Toolbar mToolbar;
     private UserController userController;
     private User user;
+    private SharedPreferences sp = null;
     private boolean hasFinishedLoading = false;
 
     private Observer userChange = new Observer() {
@@ -99,17 +102,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //setSupportActionBar(toolbar);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
-
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         View v = this.findViewById(R.id.addDevice);
         v.setOnClickListener(this);
-
-
-
-
 
         //TODO HORRIBLE MALISIMO PERO QUIERO DORMIR
         while (!hasFinishedLoading);
@@ -129,10 +127,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, RegisterDeviceActivity.class);
+        Intent intent = new Intent(this, ScanActivity.class);
         intent.putExtra("token", user.getToken());
         intent.putExtra("userId", user.getId());
         startActivity(intent);
+        Set<String> codes = new HashSet<>();
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.getStringSet("scanned", codes);
+        for(String code : codes){
+            userController.registerDevice(code, userChange);
+        }
     }
 
     private void populateAdapter() {

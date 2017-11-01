@@ -40,7 +40,7 @@ public class User extends Observable {
         this.userName = userAux.getUsername();
         this.id = userAux.getId();
         this.email = userAux.getEmail();
-        this.fullName = userAux.getUsername();
+        this.fullName = userAux.getFullName();
         this.email = userAux.getEmail();
     }
 

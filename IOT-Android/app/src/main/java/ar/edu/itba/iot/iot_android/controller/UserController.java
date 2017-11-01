@@ -49,7 +49,7 @@ public class UserController {
     }
 
     public void registerDevice(String deviceId, Observer observer){
-       // userService.registerDevice(user.getId(), deviceId, user.getToken(), new RegisterDeviceCallback(this.user, this, deviceId, observer));
+       //userService.registerDevice(user.getId(), deviceId, user.getToken(), new RegisterDeviceCallback(this.user, this, deviceId, observer));
     }
 
     public void getDevice(String deviceId, Observer observer){

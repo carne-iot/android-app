@@ -1,18 +1,11 @@
 package ar.edu.itba.iot.iot_android.service;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 
 import ar.edu.itba.iot.iot_android.model.Device;
-import ar.edu.itba.iot.iot_android.utils.JSONParser;
-import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class DeviceService {
 
