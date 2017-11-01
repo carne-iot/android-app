@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,11 +19,21 @@ import ar.edu.itba.iot.iot_android.model.UserAux;
 //TODO no usar pojo auxiliar
 public class JSONParser {
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    final private static ObjectMapper objectMapper = new ObjectMapper();
 
-    //TODO
-    public static Collection<Device> parseDevices(String json){
-        return null;
+    public static List<Device> parseDevices(String json){
+        List<DeviceAux> devicesAux = new ArrayList<>();
+        try {
+            devicesAux =
+                    objectMapper.readValue(json, objectMapper.getTypeFactory().constructCollectionType(List.class, DeviceAux.class));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        List<Device> devices = new ArrayList<>();
+        for(DeviceAux dAux : devicesAux){
+            devices.add(new Device(dAux));
+        }
+        return devices;
     }
 
 

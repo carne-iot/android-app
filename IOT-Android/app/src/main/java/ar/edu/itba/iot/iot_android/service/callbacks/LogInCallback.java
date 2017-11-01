@@ -6,6 +6,7 @@ import android.util.Log;
 import java.io.IOException;
 
 import ar.edu.itba.iot.iot_android.controller.UserController;
+import ar.edu.itba.iot.iot_android.model.User;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;

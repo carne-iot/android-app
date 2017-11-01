@@ -11,6 +11,7 @@ import ar.edu.itba.iot.iot_android.service.callbacks.GetDeviceCallback;
 import ar.edu.itba.iot.iot_android.service.callbacks.GetDevicesCallback;
 import ar.edu.itba.iot.iot_android.service.callbacks.GetUserByUserNameCallback;
 import ar.edu.itba.iot.iot_android.service.callbacks.LogInCallback;
+import ar.edu.itba.iot.iot_android.service.callbacks.RegisterDeviceCallback;
 
 public class UserController {
 
@@ -33,9 +34,9 @@ public class UserController {
         userService.logIn(user.getUserName(), user.getPassword(), new LogInCallback(this));
     }
 
-    public void updateDevices(){
+    public void updateDevices(Observer observer){
         for(Device d : user.getDevices()){
-            userService.getDevice(user.getId(), d.getId(), user.getToken(), new GetDeviceCallback(d));
+            userService.getDevice(user.getId(), d.getId(), user.getToken(), new GetDeviceCallback(this.user, observer));
         }
     }
 
@@ -46,6 +47,14 @@ public class UserController {
 
     public void getFullUserData(){
         userService.getUserByUserName(user.getUserName(), user.getToken(), new GetUserByUserNameCallback(this));
+    }
+
+    public void registerDevice(String deviceId, Observer observer){
+        userService.registerDevice(user.getId(), deviceId, user.getToken(), new RegisterDeviceCallback(this.user, this, deviceId, observer));
+    }
+
+    public void getDevice(String deviceId, Observer observer){
+        userService.getDevice(user.getId(), deviceId, user.getToken(), new GetDeviceCallback(this.user, observer));
     }
 }
 

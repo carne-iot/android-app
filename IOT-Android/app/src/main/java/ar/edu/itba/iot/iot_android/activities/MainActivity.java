@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(((String) arg).equals("token")) userController.getFullUserData();
             else if(((String) arg).equals("id")) userController.getDevices();
             else if(((String) arg).equals("deviceList")) populateAdapter();
+
         }
     };
 
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        user = new User("julian", "julian");
+        user = new User("julian", "julian", Long.valueOf(4));
         user.addObserver(userChange);
 
         userController = new UserController(user, prefs, deviceChange);
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         /*Device device = new Device("lalala", 30);
         device.addObserver(deviceChange);
         device.setTemperature(15.34);*/
+
 
 
 

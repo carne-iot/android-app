@@ -64,4 +64,13 @@ public class UserService {
             e.printStackTrace();
         }
     }
+
+    public void registerDevice(Long userId, String deviceId, String token, Callback callback) {
+        try {
+            httpService.put(baseURL + "/users/" + String.valueOf(userId) + "/devices/" + deviceId, "", token, callback);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("fail:", "no anda");
+        }
+    }
 }
