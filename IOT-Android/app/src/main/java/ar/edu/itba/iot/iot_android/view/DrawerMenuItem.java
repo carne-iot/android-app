@@ -25,13 +25,11 @@ import okhttp3.Response;
 public class DrawerMenuItem {
 
     public static final int DRAWER_MENU_ITEM_PROFILE = 1;
-    public static final int DRAWER_MENU_ITEM_REQUESTS = 2;
-    public static final int DRAWER_MENU_ITEM_GROUPS = 3;
-    public static final int DRAWER_MENU_ITEM_MESSAGE = 4;
-    public static final int DRAWER_MENU_ITEM_NOTIFICATIONS = 5;
-    public static final int DRAWER_MENU_ITEM_SETTINGS = 6;
-    public static final int DRAWER_MENU_ITEM_TERMS = 7;
-    public static final int DRAWER_MENU_ITEM_LOGOUT = 8;
+    public static final int DRAWER_MENU_ITEM_MESSAGE = 2;
+    public static final int DRAWER_MENU_ITEM_NOTIFICATIONS = 3;
+    public static final int DRAWER_MENU_ITEM_SETTINGS = 4;
+    public static final int DRAWER_MENU_ITEM_TERMS = 5;
+    public static final int DRAWER_MENU_ITEM_LOGOUT = 6;
 
 
     private static String s;
@@ -57,14 +55,6 @@ public class DrawerMenuItem {
             case DRAWER_MENU_ITEM_PROFILE:
                 itemNameTxt.setText("Profile");
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_account_circle_black_18dp));
-                break;
-            case DRAWER_MENU_ITEM_REQUESTS:
-                itemNameTxt.setText("Requests");
-                itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_compare_arrows_black_18dp));
-                break;
-            case DRAWER_MENU_ITEM_GROUPS:
-                itemNameTxt.setText("Groups");
-                itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_group_work_black_18dp));
                 break;
             case DRAWER_MENU_ITEM_MESSAGE:
                 itemNameTxt.setText("Messages");
@@ -95,14 +85,6 @@ public class DrawerMenuItem {
             case DRAWER_MENU_ITEM_PROFILE:
                 Toast.makeText(mContext, "Profile", Toast.LENGTH_SHORT).show();
                 if(mCallBack != null)mCallBack.onProfileMenuSelected();
-                break;
-            case DRAWER_MENU_ITEM_REQUESTS:
-                Toast.makeText(mContext, "Requests", Toast.LENGTH_SHORT).show();
-                if(mCallBack != null)mCallBack.onRequestMenuSelected();
-                break;
-            case DRAWER_MENU_ITEM_GROUPS:
-                Toast.makeText(mContext, "Groups", Toast.LENGTH_SHORT).show();
-                if(mCallBack != null)mCallBack.onGroupsMenuSelected();
                 break;
             case DRAWER_MENU_ITEM_MESSAGE:
                 Toast.makeText(mContext, "Messages", Toast.LENGTH_SHORT).show();
