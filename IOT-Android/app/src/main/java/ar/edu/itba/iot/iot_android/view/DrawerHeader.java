@@ -33,24 +33,13 @@ public class DrawerHeader {
 
     private final UserController userController;
 
-    private Observer userChange = new Observer() {
-        @Override
-        public void update(Observable o, Object arg) {
-            if(((String) arg).equals("fullName"))
-                nameTxt.setText(userController.getUser().getFullName());
-            else if(((String) arg).equals("email"))
-                emailTxt.setText(userController.getUser().getEmail());
-        }
-    };
-
     public DrawerHeader(UserController userController) {
         this.userController = userController;
     }
 
     @Resolve
     private void onResolved() {
-        nameTxt.setText("");
-        emailTxt.setText(" ");
-        userController.getUser().addObserver(userChange);
+        nameTxt.setText(userController.getUser().getFullName());
+        emailTxt.setText(userController.getUser().getEmail());
     }
 }

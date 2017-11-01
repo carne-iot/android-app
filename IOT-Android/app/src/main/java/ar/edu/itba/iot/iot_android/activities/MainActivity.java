@@ -48,6 +48,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(((String) arg).equals("token")) userController.getFullUserData();
             else if(((String) arg).equals("id")) userController.getDevices();
             else if(((String) arg).equals("deviceList")) populateAdapter();
+            else if(((String) arg).equals("email")){
+                mDrawer = (DrawerLayout)findViewById(R.id.drawerLayout);
+                mDrawerView = (PlaceHolderView)findViewById(R.id.drawerView);
+                mToolbar = (Toolbar)findViewById(R.id.toolbar);
+                setupDrawer();
+            }
 
         }
     };
@@ -91,10 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         userController.login();
 
-        mDrawer = (DrawerLayout)findViewById(R.id.drawerLayout);
-        mDrawerView = (PlaceHolderView)findViewById(R.id.drawerView);
-        mToolbar = (Toolbar)findViewById(R.id.toolbar);
-        setupDrawer();
+
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
