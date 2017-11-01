@@ -4,17 +4,25 @@ import java.util.Observable;
 
 public class Device extends Observable{
 
-    private double currentTemperature = -1;
+    private double temperature = -1;
 
     private double targetTemperature = -1;
 
     private boolean willTurnOver = false;
 
-    private final String id;
+    private String id;
 
-    public Device(String id, double currentTemperature, double targetTemperature, boolean willTurnOver) {
+    private String nickname;
+
+    public Device(DeviceAux dev) {
+        temperature = dev.getTemperature();
+        id = dev.getId();
+        nickname = dev.getNickname();
+    }
+
+    public Device(String id, double temperature, double targetTemperature, boolean willTurnOver) {
         this.id = id;
-        this.currentTemperature = currentTemperature;
+        this.temperature = temperature;
         this.targetTemperature = targetTemperature;
         this.willTurnOver = willTurnOver;
     }
@@ -30,8 +38,8 @@ public class Device extends Observable{
         this.targetTemperature = targetTemperature;
     }
 
-    public double getCurrentTemperature() {
-        return currentTemperature;
+    public double getTemperature() {
+        return temperature;
     }
 
     public double getTargetTemperature() {
@@ -42,10 +50,6 @@ public class Device extends Observable{
         return willTurnOver;
     }
 
-    public void setTargetTemperature(double targetTemperature) {
-        this.targetTemperature = targetTemperature;
-    }
-
     public String getId() {
         return id;
     }
@@ -54,9 +58,26 @@ public class Device extends Observable{
         this.willTurnOver = willTurnOver;
     }
 
-    public void setCurrentTemperature(double currentTemperature) {
-        this.currentTemperature = currentTemperature;
+    public void setTargetTemperature(double targetTemperature) {
+        this.targetTemperature = targetTemperature;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
         this.setChanged();
         this.notifyObservers();
     }
 }
+

@@ -3,20 +3,15 @@ package ar.edu.itba.iot.iot_android.service.callbacks;
 import android.util.Log;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observer;
 
-import ar.edu.itba.iot.iot_android.controller.UserController;
 import ar.edu.itba.iot.iot_android.model.Device;
 import ar.edu.itba.iot.iot_android.model.User;
-import ar.edu.itba.iot.iot_android.utils.JSONParser;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 
 public class GetDevicesCallback implements Callback {
@@ -53,7 +48,7 @@ public class GetDevicesCallback implements Callback {
 
         for (int i = 0; i < 5; i++) {
             Device device = devices.get(i);
-            device.setCurrentTemperature(20.1 + i);
+            device.setTemperature(20.1 + i);
         }
 
         Log.d("devices", "i got my devices");

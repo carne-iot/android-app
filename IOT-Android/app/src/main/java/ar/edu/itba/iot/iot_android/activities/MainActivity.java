@@ -16,8 +16,6 @@ import ar.edu.itba.iot.iot_android.R;
 
 import com.mindorks.placeholderview.PlaceHolderView;
 
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void update(Observable o, Object arg) {
             Device device = (Device)o;
             String id = device.getId();
-            double temperature = device.getCurrentTemperature();
+            double temperature = device.getTemperature();
             double targetTemperature = device.getTargetTemperature();
             Log.d("-", "---------------");
             Log.d("new temperature", id + ": " + temperature);
@@ -133,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         /*Device device = new Device("lalala", 30);
         device.addObserver(deviceChange);
-        device.setCurrentTemperature(15.34);*/
+        device.setTemperature(15.34);*/
 
 
 

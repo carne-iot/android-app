@@ -27,6 +27,6 @@ public class GetDeviceCallback implements Callback {
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        device.setCurrentTemperature(JSONParser.parseDevice(response.body().string()).getCurrentTemperature());
+        device.setTemperature(JSONParser.parseDevice(response.body().string()).getTemperature());
     }
 }

@@ -19,6 +19,10 @@ public class User extends Observable{
 
     private Long id = Long.valueOf(-1);
 
+    private String fullName;
+
+    private String email;
+
     private String logoutURL = null;
 
     public User(String userName, String password) {
@@ -30,6 +34,14 @@ public class User extends Observable{
         this.userName = userName;
         this.password = password;
         this.id = id;
+    }
+
+
+
+    public User(UserAux userAux){
+        this.userName = userAux.getUsername();
+        this.fullName = userAux.getUsername();
+        this.email = userAux.getEmail();
     }
 
     public String getToken() {
@@ -61,7 +73,6 @@ public class User extends Observable{
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -71,4 +82,31 @@ public class User extends Observable{
     }
 
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getLogoutURL() {
+        return logoutURL;
+    }
 }
