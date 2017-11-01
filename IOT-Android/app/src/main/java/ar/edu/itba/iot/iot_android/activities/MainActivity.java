@@ -43,7 +43,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Observer userChange = new Observer() {
         @Override
         public void update(Observable o, Object arg) {
-            userController.getDevices();
+
+            userController.registerDevice("MTIzNDEyMzQ", deviceChange);
+            //userController.getDevices();
         }
     };
 
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //aca empieza la logica
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        user = new User("julian", "julian");
+        user = new User("julian", "julian", Long.valueOf(4));
         user.addObserver(userChange);
 
         userController = new UserController(user, prefs, deviceChange);
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         /*Device device = new Device("lalala", 30);
         device.addObserver(deviceChange);
         device.setTemperature(15.34);*/
+
 
 
 

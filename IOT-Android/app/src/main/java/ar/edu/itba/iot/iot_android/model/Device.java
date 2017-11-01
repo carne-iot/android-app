@@ -79,5 +79,33 @@ public class Device extends Observable{
         this.setChanged();
         this.notifyObservers();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Device device = (Device) o;
+
+        if (Double.compare(device.temperature, temperature) != 0) return false;
+        if (Double.compare(device.targetTemperature, targetTemperature) != 0) return false;
+        if (willTurnOver != device.willTurnOver) return false;
+        if (id != null ? !id.equals(device.id) : device.id != null) return false;
+        return nickname != null ? nickname.equals(device.nickname) : device.nickname == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(temperature);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(targetTemperature);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (willTurnOver ? 1 : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
+        return result;
+    }
 }
 

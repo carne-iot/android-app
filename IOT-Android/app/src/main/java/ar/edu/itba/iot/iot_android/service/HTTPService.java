@@ -1,5 +1,7 @@
 package ar.edu.itba.iot.iot_android.service;
 
+import android.util.Log;
+
 import java.io.IOException;
 
 import okhttp3.Callback;
@@ -55,4 +57,11 @@ public class HTTPService {
         client.newCall(request).enqueue(callback);
     }
 
+    public void put(String url, String json, String token, Callback callback) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + token)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 }
