@@ -5,6 +5,8 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.Serializable;
 
+import ar.edu.itba.iot.iot_android.model.Device;
+import ar.edu.itba.iot.iot_android.model.User;
 import ar.edu.itba.iot.iot_android.service.callbacks.GetUserByUserNameCallback;
 import okhttp3.Callback;
 
@@ -65,5 +67,16 @@ public class UserService  implements Serializable {
             e.printStackTrace();
             Log.d("fail:", "no anda");
         }
+    }
+
+    public void logOut(User user, Callback callback){
+
+        try {
+            httpService.post(user.getLogoutURL(), user.getToken(), callback);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("fail:", "Could not log out");
+        }
+
     }
 }

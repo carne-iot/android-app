@@ -11,6 +11,7 @@ import ar.edu.itba.iot.iot_android.service.callbacks.GetDeviceCallback;
 import ar.edu.itba.iot.iot_android.service.callbacks.GetDevicesCallback;
 import ar.edu.itba.iot.iot_android.service.callbacks.GetUserByUserNameCallback;
 import ar.edu.itba.iot.iot_android.service.callbacks.LogInCallback;
+import ar.edu.itba.iot.iot_android.service.callbacks.LogOutCallback;
 
 public class UserController {
 
@@ -54,6 +55,11 @@ public class UserController {
 
     public void getDevice(String deviceId, Observer observer){
         userService.getDevice(user.getId(), deviceId, user.getToken(), new GetDeviceCallback(this.user, observer));
+    }
+
+    public void signOut(User user){
+        userService.logOut(user, new LogOutCallback());
+        user = null;
     }
 }
 

@@ -15,6 +15,7 @@ import com.mindorks.placeholderview.annotations.View;
 import java.io.IOException;
 
 import ar.edu.itba.iot.iot_android.R;
+import ar.edu.itba.iot.iot_android.controller.UserController;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -29,6 +30,7 @@ public class DrawerMenuItem {
     public static final int DRAWER_MENU_ITEM_SETTINGS = 3;
     public static final int DRAWER_MENU_ITEM_TERMS = 4;
     public static final int DRAWER_MENU_ITEM_LOGOUT = 5;
+    public static final int DRAWER_MENU_SIGNIN = 6;
 
 
     private static String s;
@@ -43,7 +45,10 @@ public class DrawerMenuItem {
     @View(R.id.itemIcon)
     private ImageView itemIcon;
 
-    public DrawerMenuItem(Context context, int menuPosition) {
+    private UserController userController;
+
+    public DrawerMenuItem(Context context, int menuPosition, UserController userController) {
+        userController = userController;
         mContext = context;
         mMenuPosition = menuPosition;
     }
@@ -71,6 +76,11 @@ public class DrawerMenuItem {
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_exit_to_app_black_18dp));
                 itemNameTxt.setText("Logout");
                 break;
+            case DRAWER_MENU_SIGNIN:
+                itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_exit_to_app_black_18dp));
+                itemNameTxt.setText("Login");
+                break;
+
         }
     }
 
@@ -97,6 +107,11 @@ public class DrawerMenuItem {
             case DRAWER_MENU_ITEM_LOGOUT:
                 Toast.makeText(mContext, "Logout", Toast.LENGTH_SHORT).show();
                 if(mCallBack != null)mCallBack.onLogoutMenuSelected();
+                break;
+            case DRAWER_MENU_SIGNIN:
+                Toast.makeText(mContext, "SIGNIN", Toast.LENGTH_SHORT).show();
+               // onTermsMenuSelected();
+             //   if(mCallBack != null)mCallBack.onTermsMenuSelected();
                 break;
         }
     }
@@ -138,7 +153,9 @@ public class DrawerMenuItem {
             }
         });
 
+    }
 
-
+    public void onLogoutMenuSelected(){
+        userController.signOut(userController.getUser());
     }
 }
