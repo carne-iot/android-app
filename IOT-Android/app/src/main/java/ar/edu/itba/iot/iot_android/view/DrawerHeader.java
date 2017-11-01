@@ -16,6 +16,7 @@ import ar.edu.itba.iot.iot_android.controller.UserController;
 
 @NonReusable
 @Layout(R.layout.drawer_header)
+//View of username and email in drawer
 public class DrawerHeader {
 
     @View(R.id.profileImageView)
@@ -35,9 +36,6 @@ public class DrawerHeader {
 
     @Resolve
     private void onResolved() {
-        Log.d("hola", "hola");
-//        Log.d("user", userController.getUser().toString());
-        Log.d("hola", "hola");
         nameTxt.setText(userController.getUser().getFullName());
         emailTxt.setText(userController.getUser().getEmail());
     }
