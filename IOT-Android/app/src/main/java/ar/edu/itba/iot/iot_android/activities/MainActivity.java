@@ -17,6 +17,7 @@ import ar.edu.itba.iot.iot_android.R;
 
 import com.mindorks.placeholderview.PlaceHolderView;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
@@ -34,9 +35,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String[] devicesNames = null;
-    private String[] targetTemps = null;
-    private String[] currentTemps = null;
+    private List<String> devicesNames = null;
+    private List<String> targetTemps = null;
+    private List<String> currentTemps = null;
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
@@ -51,9 +52,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(((String) arg).equals("token")) userController.getFullUserData();
             else if(((String) arg).equals("id")) userController.getDevices();
             else if(((String) arg).equals("deviceList")) populateAdapter();
+            else if(((String) arg).equals("email")){
+                mDrawer = (DrawerLayout)findViewById(R.id.drawerLayout);
+                mDrawerView = (PlaceHolderView)findViewById(R.id.drawerView);
+                mToolbar = (Toolbar)findViewById(R.id.toolbar);
+                setupDrawer();
+            }
 
         }
     };
+
+
 
     private Observer deviceChange = new Observer() {
         @Override
@@ -70,9 +79,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             List<Device> devices = user.getDevices();
 
             int index = devices.indexOf(device);
-            devicesNames[index] = id;
-            currentTemps[index] = Double.toString(temperature);
-            targetTemps[index] = Double.toString(targetTemperature);
+            devicesNames.add(index, id);
+            currentTemps.add(index, Double.toString(temperature));
+            targetTemps.add(index, Double.toString(targetTemperature));
         }
     };
 
@@ -83,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         user = new User("julian", "julian", Long.valueOf(4));
+
         user.addObserver(userChange);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -91,10 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         userController.login();
 
-        mDrawer = (DrawerLayout)findViewById(R.id.drawerLayout);
-        mDrawerView = (PlaceHolderView)findViewById(R.id.drawerView);
-        mToolbar = (Toolbar)findViewById(R.id.toolbar);
-        setupDrawer();
+
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
@@ -142,16 +149,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void populateAdapter() {
         int n = user.getDevices().size();
 
-        devicesNames = new String[n];
-        targetTemps = new String[n];
-        currentTemps = new String[n];
+        devicesNames = new ArrayList<>();
+        targetTemps = new ArrayList<>();
+        currentTemps = new ArrayList<>();
 
         int i = 0;
 
         for(Device d: user.getDevices()){
-            devicesNames[i] = d.getNickname();
-            currentTemps[i] = String.format("%.1f", d.getTemperature());
-            targetTemps[i] = String.format("%.1f", d.getTargetTemperature());
+            devicesNames.add(i, d.getNickname());
+            currentTemps.add(i, String.format("%.1f", d.getTemperature()));
+            targetTemps.add(i, String.format("%.1f", d.getTargetTemperature()));
         }
         hasFinishedLoading = true;
     }
@@ -160,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDrawerView
                 .addView(new DrawerHeader(userController))
                 .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE))
-                .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_MESSAGE))
                 .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_NOTIFICATIONS))
                 .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_TERMS))
                 .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS))

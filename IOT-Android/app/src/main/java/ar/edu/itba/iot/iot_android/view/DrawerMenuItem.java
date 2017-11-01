@@ -25,11 +25,10 @@ import okhttp3.Response;
 public class DrawerMenuItem {
 
     public static final int DRAWER_MENU_ITEM_PROFILE = 1;
-    public static final int DRAWER_MENU_ITEM_MESSAGE = 2;
-    public static final int DRAWER_MENU_ITEM_NOTIFICATIONS = 3;
-    public static final int DRAWER_MENU_ITEM_SETTINGS = 4;
-    public static final int DRAWER_MENU_ITEM_TERMS = 5;
-    public static final int DRAWER_MENU_ITEM_LOGOUT = 6;
+    public static final int DRAWER_MENU_ITEM_NOTIFICATIONS = 2;
+    public static final int DRAWER_MENU_ITEM_SETTINGS = 3;
+    public static final int DRAWER_MENU_ITEM_TERMS = 4;
+    public static final int DRAWER_MENU_ITEM_LOGOUT = 5;
 
 
     private static String s;
@@ -55,10 +54,6 @@ public class DrawerMenuItem {
             case DRAWER_MENU_ITEM_PROFILE:
                 itemNameTxt.setText("Profile");
                 itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_account_circle_black_18dp));
-                break;
-            case DRAWER_MENU_ITEM_MESSAGE:
-                itemNameTxt.setText("Messages");
-                itemIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_email_black_18dp));
                 break;
             case DRAWER_MENU_ITEM_NOTIFICATIONS:
                 itemNameTxt.setText("Notifications");
@@ -86,10 +81,6 @@ public class DrawerMenuItem {
                 Toast.makeText(mContext, "Profile", Toast.LENGTH_SHORT).show();
                 if(mCallBack != null)mCallBack.onProfileMenuSelected();
                 break;
-            case DRAWER_MENU_ITEM_MESSAGE:
-                Toast.makeText(mContext, "Messages", Toast.LENGTH_SHORT).show();
-                if(mCallBack != null)mCallBack.onMessagesMenuSelected();
-                break;
             case DRAWER_MENU_ITEM_NOTIFICATIONS:
                 Toast.makeText(mContext, "Notifications", Toast.LENGTH_SHORT).show();
                 if(mCallBack != null)mCallBack.onNotificationsMenuSelected();
@@ -116,9 +107,6 @@ public class DrawerMenuItem {
 
     public interface DrawerCallBack{
         void onProfileMenuSelected();
-        void onRequestMenuSelected();
-        void onGroupsMenuSelected();
-        void onMessagesMenuSelected();
         void onNotificationsMenuSelected();
         void onSettingsMenuSelected();
         void onTermsMenuSelected();

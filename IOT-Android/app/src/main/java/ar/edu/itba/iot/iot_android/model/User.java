@@ -25,6 +25,10 @@ public class User extends Observable {
 
     private String logoutURL = null;
 
+    public User(){
+
+    }
+
     public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
@@ -95,6 +99,8 @@ public class User extends Observable {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+        this.setChanged();
+        this.notifyObservers("fullName");
     }
 
     public String getEmail() {
@@ -103,6 +109,8 @@ public class User extends Observable {
 
     public void setEmail(String email) {
         this.email = email;
+        this.setChanged();
+        this.notifyObservers("email");
     }
 
     public void setPassword(String password) {

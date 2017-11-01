@@ -24,7 +24,10 @@ public class UserService  implements Serializable {
     public void logIn(String username, String password, Callback callback) {
         try {
             //TODO user JSON lib
-            httpService.post(baseURL + "/auth/login", "{\"username\":\"julian\",\"password\":\"julian\"}", callback);
+            httpService.post(baseURL + "/auth/login", "{\n" +
+                    " \"username\":\"julian\",\n" +
+                    " \"password\":\"julian\"\n" +
+                    "}", callback);
         } catch (IOException e) {
             e.printStackTrace();
         }
