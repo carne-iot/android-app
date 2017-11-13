@@ -38,6 +38,7 @@ public class ScanActivity extends AppCompatActivity implements OnScanListener {
     private String token;
     private Long userId;
     private SharedPreferences sp = null;
+    private Intent returnIntent = new Intent();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +74,9 @@ public class ScanActivity extends AppCompatActivity implements OnScanListener {
                 codesValues.add(code.getData());
                 Log.d("scanned", code.getData());
             }
-            if(sp != null){
-                SharedPreferences.Editor e = sp.edit();
-                e.putStringSet("codes", codesValues);
-
-            }
-            this.finish();
+            returnIntent.putExtra("codes", codesValues.toArray(new String[codesValues.size()]));
+            setResult(Activity.RESULT_OK,returnIntent);
+            finish();
         }
 
 

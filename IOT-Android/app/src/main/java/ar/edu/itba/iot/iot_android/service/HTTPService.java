@@ -58,10 +58,12 @@ public class HTTPService implements Serializable{
         client.newCall(request).enqueue(callback);
     }
 
-    public void put(String url, String json, String token, Callback callback) throws IOException {
+    public void put(String url,String token, Callback callback) throws IOException {
+        RequestBody body = RequestBody.create(JSON, "");
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authorization", "Bearer " + token)
+                .put(body)
                 .build();
         client.newCall(request).enqueue(callback);
     }

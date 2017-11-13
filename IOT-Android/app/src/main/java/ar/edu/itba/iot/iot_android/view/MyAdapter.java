@@ -67,6 +67,46 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     }
 
+    public void updateDevice(String name, String currTemp, String targetTemp, int index) {
+
+        devicesNames.set(index, name);
+        currentTemps.set(index, currTemp);
+        targetTemps.set(index, targetTemp);
+
+        this.notifyDataSetChanged();
+
+    }
+
+    public void updateAll(List<String> devicesNames, List<String> currentTemps, List<String> targetTemps) {
+
+        this.devicesNames = devicesNames;
+        this.currentTemps = currentTemps;
+        this.targetTemps = targetTemps;
+
+        this.notifyDataSetChanged();
+
+    }
+
+    public void removeDevice(int index) {
+
+        devicesNames.remove(index);
+        currentTemps.remove(index);
+        targetTemps.remove(index);
+
+        this.notifyDataSetChanged();
+
+    }
+
+    public void addDevice(String name, String currTemp, String targetTemp) {
+
+        devicesNames.add(name);
+        currentTemps.add(currTemp);
+        targetTemps.add(targetTemp);
+
+        this.notifyDataSetChanged();
+
+    }
+
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {

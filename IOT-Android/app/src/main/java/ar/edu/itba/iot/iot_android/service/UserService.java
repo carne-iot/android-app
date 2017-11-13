@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Observer;
 
 import ar.edu.itba.iot.iot_android.model.Device;
 import ar.edu.itba.iot.iot_android.model.User;
@@ -62,7 +63,7 @@ public class UserService  implements Serializable {
 
     public void registerDevice(Long userId, String deviceId, String token, Callback callback) {
         try {
-            httpService.put(baseURL + "/users/" + String.valueOf(userId) + "/devices/" + deviceId, "", token, callback);
+            httpService.put(baseURL + "/users/" + String.valueOf(userId) + "/devices/" + deviceId, token, callback);
         } catch (IOException e) {
             e.printStackTrace();
             Log.d("Fail:", "Could not register device");

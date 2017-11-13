@@ -1,10 +1,13 @@
 package ar.edu.itba.iot.iot_android.service.callbacks;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import java.io.IOException;
 import java.util.List;
-import java.util.Observer;
 
 
+import ar.edu.itba.iot.iot_android.activities.MainActivity;
 import ar.edu.itba.iot.iot_android.model.Device;
 import ar.edu.itba.iot.iot_android.model.User;
 import ar.edu.itba.iot.iot_android.utils.JSONManager;
@@ -17,11 +20,12 @@ import okhttp3.Response;
 public class GetDeviceCallback implements Callback {
 
     private final User user;
-    private final Observer observer;
 
-    public GetDeviceCallback(User user, Observer observer) {
+    private final MainActivity mainActivity;
+
+    public GetDeviceCallback(MainActivity mainActivity, User user) {
+        this.mainActivity = mainActivity;
         this.user = user;
-        this.observer = observer;
     }
 
     @Override
@@ -37,7 +41,12 @@ public class GetDeviceCallback implements Callback {
         if(!devices.contains(device)) {
             devices.add(device);
         }
-        device.addObserver(this.observer);
         device.setTemperature(device.getTemperature());
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mainActivity.populateAdapter();
+            }
+        });
     }
 }

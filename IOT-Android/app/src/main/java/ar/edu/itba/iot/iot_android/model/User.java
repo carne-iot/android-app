@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 
-public class User extends Observable {
+public class User extends Observable implements Serializable{
 
     private String token = null;
 
@@ -54,8 +54,7 @@ public class User extends Observable {
 
     public void setToken(String token) {
         this.token = token;
-        this.setChanged();
-        this.notifyObservers("token");
+        updated("token");
     }
 
     public String getUserName() {
@@ -80,8 +79,7 @@ public class User extends Observable {
 
     public void setId(Long id) {
         this.id = id;
-        this.setChanged();
-        this.notifyObservers("id");
+        updated("id");
     }
 
     public void setLogoutURL(String logoutURL) {
@@ -99,8 +97,7 @@ public class User extends Observable {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-        this.setChanged();
-        this.notifyObservers("fullName");
+        updated("fullName");
     }
 
     public String getEmail() {
@@ -109,8 +106,7 @@ public class User extends Observable {
 
     public void setEmail(String email) {
         this.email = email;
-        this.setChanged();
-        this.notifyObservers("email");
+        updated("email");
     }
 
     public void setPassword(String password) {
@@ -123,8 +119,7 @@ public class User extends Observable {
 
     public void addDevices(Collection<Device> devices){
         this.devices.addAll(devices);
-        this.setChanged();
-        this.notifyObservers("deviceList");
+        updated("deviceList");
     }
 
     public void setDevices(Collection<Device> devices){
@@ -132,5 +127,9 @@ public class User extends Observable {
         addDevices(devices);
     }
 
+    public void updated(String tag){
+        this.setChanged();
+        this.notifyObservers(tag);
+    }
 
 }

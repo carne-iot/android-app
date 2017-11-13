@@ -1,5 +1,6 @@
 package ar.edu.itba.iot.iot_android.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ import ar.edu.itba.iot.iot_android.view.MyAdapter;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private MyAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<String> devicesNames = null;
     private List<String> targetTemps = null;
@@ -43,45 +44,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Toolbar mToolbar;
     private UserController userController;
     private User user;
-    private SharedPreferences sp = null;
-    private boolean hasFinishedLoading = false;
+
+
 
     private Observer userChange = new Observer() {
+
         @Override
         public void update(Observable o, Object arg) {
             if(((String) arg).equals("token")) userController.getFullUserData();
-            else if(((String) arg).equals("id")) userController.getDevices();
-            else if(((String) arg).equals("deviceList")) populateAdapter();
-            else if(((String) arg).equals("email")){
-                mDrawer = (DrawerLayout)findViewById(R.id.drawerLayout);
-                mDrawerView = (PlaceHolderView)findViewById(R.id.drawerView);
-                mToolbar = (Toolbar)findViewById(R.id.toolbar);
-                setupDrawer();
+            else if(((String) arg).equals("id")){
+                userController.getDevices();
             }
-
-        }
-    };
-
-
-
-    private Observer deviceChange = new Observer() {
-        @Override
-        public void update(Observable o, Object arg) {
-            if(devicesNames == null || targetTemps == null || currentTemps == null) return;
-
-            Device device = (Device)o;
-            String id = device.getId();
-            double temperature = device.getTemperature();
-            double targetTemperature = device.getTargetTemperature();
-            Log.d("-", "---------------");
-            Log.d("new temperature", id + ": " + temperature);
-
-            List<Device> devices = user.getDevices();
-
-            int index = devices.indexOf(device);
-            devicesNames.add(index, id);
-            currentTemps.add(index, Double.toString(temperature));
-            targetTemps.add(index, Double.toString(targetTemperature));
         }
     };
 
@@ -97,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        userController = new UserController(user, prefs, deviceChange);
+        userController = new UserController(this, user);
 
         userController.login();
 
@@ -114,12 +87,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         View v = this.findViewById(R.id.addDevice);
         v.setOnClickListener(this);
-
-        //TODO HORRIBLE MALISIMO PERO QUIERO DORMIR
-        while (!hasFinishedLoading);
-
-        mAdapter = new MyAdapter(devicesNames, currentTemps, targetTemps);
-        mRecyclerView.setAdapter(mAdapter);
+        mDrawer = (DrawerLayout)findViewById(R.id.drawerLayout);
+        mDrawerView = (PlaceHolderView)findViewById(R.id.drawerView);
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        setupDrawer();
 
     }
 
@@ -136,45 +107,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(this, ScanActivity.class);
         intent.putExtra("token", user.getToken());
         intent.putExtra("userId", user.getId());
-        startActivity(intent);
-        Set<String> codes = new HashSet<>();
-        sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.getStringSet("scanned", codes);
-        for(String code : codes){
-            userController.registerDevice(code, userChange);
-        }
+        startActivityForResult(intent, 1);
     }
 
-    private void populateAdapter() {
+    public void populateAdapter() {
         int n = user.getDevices().size();
 
-        devicesNames = new ArrayList<>();
-        targetTemps = new ArrayList<>();
-        currentTemps = new ArrayList<>();
+        devicesNames = new ArrayList<>(n);
+        targetTemps = new ArrayList<>(n);
+        currentTemps = new ArrayList<>(n);
 
         int i = 0;
+
+        devicesNames.clear();
+        currentTemps.clear();
+        targetTemps.clear();
 
         for(Device d: user.getDevices()){
             devicesNames.add(i, d.getNickname());
             currentTemps.add(i, String.format("%.1f", d.getTemperature()));
             targetTemps.add(i, String.format("%.1f", d.getTargetTemperature()));
+            i++;
         }
-        hasFinishedLoading = true;
+
+        if(mAdapter != null) mAdapter.updateAll(devicesNames, targetTemps, currentTemps);
+        else{
+            mAdapter = new MyAdapter(devicesNames, currentTemps, targetTemps);
+            mRecyclerView.setAdapter(mAdapter);
+        }
     }
 
-    private void setupDrawer(){
+    public void setupDrawer(){
 
         if(userController.isLoggedIn()){
             mDrawerView
                     .addView(new DrawerHeader(userController))
-                    .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE, userController))
-                    .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_NOTIFICATIONS, userController))
-                    .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_TERMS, userController))
-                    .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS, userController))
-                    .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_ITEM_LOGOUT, userController));
+                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE, userController))
+                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_NOTIFICATIONS, userController))
+                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_TERMS, userController))
+                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS, userController))
+                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_LOGOUT, userController));
         }else{
             mDrawerView
-                    .addView(new DrawerMenuItem(this.getApplicationContext(), DrawerMenuItem.DRAWER_MENU_SIGNIN, userController));
+                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_SIGNIN, userController));
         }
 
         ActionBarDrawerToggle  drawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.open_drawer, R.string.close_drawer){
@@ -191,4 +166,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDrawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                String[] a = data.getStringArrayExtra("codes");
+                for(String code : a){
+                    userController.registerDevice(code);
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
 }
