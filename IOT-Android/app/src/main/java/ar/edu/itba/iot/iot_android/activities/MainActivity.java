@@ -2,6 +2,7 @@ package ar.edu.itba.iot.iot_android.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import ar.edu.itba.iot.iot_android.R;
@@ -205,13 +207,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_name, null, false);
         // Set up the input
         final EditText input = (EditText) viewInflated.findViewById(R.id.edit_name_text);
+
+        //Set current name to edit and start with all text selected
+        input.setText(device.getNickname());
+        input.selectAll();
+
+        //open keyboard
+        InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+
         builder.setView(viewInflated);
 
         // Set up the buttons
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //close keyboard
+                InputMethodManager imm = (InputMethodManager)getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
                 dialog.dismiss();
                 device.setNickname(input.getText().toString());
             }
@@ -219,6 +234,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //close keyboard
+                InputMethodManager imm = (InputMethodManager)getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+
                 dialog.cancel();
             }
         });
