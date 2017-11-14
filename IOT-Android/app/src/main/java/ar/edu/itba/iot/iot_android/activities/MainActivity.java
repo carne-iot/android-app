@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+
 import ar.edu.itba.iot.iot_android.R;
 
 import com.mindorks.placeholderview.PlaceHolderView;
@@ -64,21 +66,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        user = new User("julian", "julian", Long.valueOf(4));
+        user = new User("hjulian", "hjulian", Long.valueOf(4));
 
         user.addObserver(userChange);
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         userController = new UserController(this, user);
 
         userController.login();
 
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        // Sets the Toolbar to act as the ActionBar for this Activity window.
-        // Make sure the toolbar exists in the activity and is not null
-        //setSupportActionBar(toolbar);
+
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         // use a linear layout manager
@@ -149,7 +146,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_LOGOUT, userController));
         }else{
             mDrawerView
-                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_SIGNIN, userController));
+                    .addView(new DrawerHeader(userController))
+                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_SIGNIN, userController))
+                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_TERMS, userController))
+                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS, userController));
         }
 
         ActionBarDrawerToggle  drawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.open_drawer, R.string.close_drawer){
@@ -187,4 +187,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
     }
 
+    public void updateDrawer() {
+        mDrawerView.removeAllViews();
+        mDrawerView.refresh();
+        setupDrawer();
+    }
 }

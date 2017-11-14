@@ -39,7 +39,9 @@ public class DrawerHeader {
 
     @Resolve
     private void onResolved() {
-        nameTxt.setText(userController.getUser().getFullName());
-        emailTxt.setText(userController.getUser().getEmail());
+        if(userController.getUser() != null){
+            nameTxt.setText(userController.getUser().getFullName());
+            emailTxt.setText(userController.getUser().getEmail());
+        }
     }
 }

@@ -1,7 +1,14 @@
 package ar.edu.itba.iot.iot_android.service.callbacks;
 
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
+
+import com.mindorks.placeholderview.PlaceHolderView;
+
 import java.io.IOException;
 
+import ar.edu.itba.iot.iot_android.R;
 import ar.edu.itba.iot.iot_android.activities.MainActivity;
 import ar.edu.itba.iot.iot_android.controller.UserController;
 import ar.edu.itba.iot.iot_android.model.User;
@@ -28,7 +35,16 @@ public class GetUserByUserNameCallback implements Callback {
     @Override
     public void onResponse(Call call, Response response) throws IOException {
         //TODO no anda el endpoint y no se sabe como devuelve
-
+        if(!response.isSuccessful()){
+            mainActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(mainActivity, "Username and Password did not match", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+            return;
+        }
         User newUser =  JSONManager.parseUser(response.body().string());
         userController.getUser().setId(newUser.getId());
         userController.getUser().setFullName(newUser.getFullName());
@@ -36,10 +52,9 @@ public class GetUserByUserNameCallback implements Callback {
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //TODO fix this (double drawer)
-//                mainActivity.setupDrawer();
+                userController.setLoggedIn(true);
+                mainActivity.updateDrawer();
             }
         });
-
     }
 }

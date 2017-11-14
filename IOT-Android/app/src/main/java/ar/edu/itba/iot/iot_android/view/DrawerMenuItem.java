@@ -110,9 +110,13 @@ public class DrawerMenuItem {
                 if(mCallBack != null)mCallBack.onLogoutMenuSelected();
                 break;
             case DRAWER_MENU_SIGNIN:
-                Toast.makeText(mContext, "SIGNIN", Toast.LENGTH_SHORT).show();
-               // onTermsMenuSelected();
-             //   if(mCallBack != null)mCallBack.onTermsMenuSelected();
+                Toast.makeText(mContext, "SIGNING IN", Toast.LENGTH_SHORT).show();
+                userController.getUser().setUserName("julian");
+                userController.getUser().setPassword("julian");
+                userController.getUser().setId(Long.valueOf(4));
+                userController.login();
+                onTermsMenuSelected();
+                if(mCallBack != null)mCallBack.onTermsMenuSelected();
                 break;
         }
     }

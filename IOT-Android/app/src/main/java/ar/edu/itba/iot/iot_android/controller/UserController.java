@@ -16,8 +16,7 @@ public class UserController {
     private UserService userService = new UserService();
     private final User user;
     private final MainActivity mainActivity;
-    //TODO sacar kbeza
-    private boolean isLoggedIn = true;
+    private boolean isLoggedIn = false;
 
     public UserController(MainActivity mainActivity, User user) {
         this.user = user;
@@ -49,7 +48,7 @@ public class UserController {
     }
 
     public void signOut(User user){
-        userService.logOut(user, new LogOutCallback(this));
+        userService.logOut(user, new LogOutCallback(mainActivity, this));
     }
 
     public boolean isLoggedIn() {
