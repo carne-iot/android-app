@@ -29,7 +29,6 @@ public class RegisterDeviceCallback implements Callback {
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        userController.getUser().updated("deviceList");
-        //TODO informar resultado.
+        userController.getDevices();
     }
 }

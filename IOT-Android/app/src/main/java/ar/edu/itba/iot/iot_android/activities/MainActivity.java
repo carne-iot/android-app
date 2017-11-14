@@ -229,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
                 dialog.dismiss();
                 device.setNickname(input.getText().toString());
+                populateAdapter();
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
