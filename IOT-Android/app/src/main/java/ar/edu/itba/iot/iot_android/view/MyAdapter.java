@@ -3,18 +3,23 @@ package ar.edu.itba.iot.iot_android.view;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
 
 import ar.edu.itba.iot.iot_android.R;
+import ar.edu.itba.iot.iot_android.activities.MainActivity;
+import ar.edu.itba.iot.iot_android.controller.UserController;
+import ar.edu.itba.iot.iot_android.model.User;
 
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
     private List<String> devicesNames;
     private List<String> currentTemps;
     private List<String> targetTemps;
+    private MainActivity mainActivity;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -35,10 +40,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(List<String> devicesNames, List<String> currentTemps, List<String> targetTemps) {
+    public MyAdapter(MainActivity mainActivity, List<String> devicesNames, List<String> currentTemps, List<String> targetTemps) {
         this.devicesNames = devicesNames;
         this.currentTemps = currentTemps;
         this.targetTemps = targetTemps;
+        this.mainActivity = mainActivity;
     }
 
     // Create new views (invoked by the layout manager)
@@ -58,12 +64,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.nameTextView.setText(devicesNames.get(position));
         holder.currTempTextView.setText(currentTemps.get(position));
         holder.targetTempTextView.setText(targetTemps.get(position));
+
+        holder.nameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainActivity.changeDeviceName(position);
+                    }
+                });
+            }
+        });
 
     }
 

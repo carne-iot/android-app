@@ -1,20 +1,22 @@
 package ar.edu.itba.iot.iot_android.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import ar.edu.itba.iot.iot_android.R;
 
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        user = new User("hjulian", "hjulian", Long.valueOf(4));
+        user = new User("julian", "julian", Long.valueOf(4));
 
         user.addObserver(userChange);
 
@@ -129,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(mAdapter != null) mAdapter.updateAll(devicesNames, targetTemps, currentTemps);
         else{
-            mAdapter = new MyAdapter(devicesNames, currentTemps, targetTemps);
+            mAdapter = new MyAdapter(this, devicesNames, currentTemps, targetTemps);
             mRecyclerView.setAdapter(mAdapter);
         }
     }
@@ -191,5 +193,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDrawerView.removeAllViews();
         mDrawerView.refresh();
         setupDrawer();
+    }
+
+    public void changeDeviceName(final int deviceNumber){
+
+        final Device device = user.getDevices().get(deviceNumber);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_Alert);
+        builder.setTitle("Change Nickname");
+        // I'm using fragment here so I'm using getView() to provide ViewGroup
+        // but you can provide here any other instance of ViewGroup from your Fragment / Activity
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_name, null, false);
+        // Set up the input
+        final EditText input = (EditText) viewInflated.findViewById(R.id.edit_name_text);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        builder.setView(viewInflated);
+
+        // Set up the buttons
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                device.setNickname(input.getText().toString());
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 }
