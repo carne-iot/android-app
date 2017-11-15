@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        user = new User("julian", "julian", Long.valueOf(4));
+        user = new User("hjulian", "hjulian", Long.valueOf(4));
 
         user.addObserver(userChange);
 
