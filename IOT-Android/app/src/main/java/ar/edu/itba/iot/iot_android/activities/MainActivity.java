@@ -2,6 +2,7 @@ package ar.edu.itba.iot.iot_android.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 
 import ar.edu.itba.iot.iot_android.R;
 
@@ -244,5 +246,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         builder.show();
+    }
+
+    public void changeDeviceTargetTemperature(final int deviceNumber) {
+        final Device device = user.getDevices().get(deviceNumber);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_Alert);
+        builder.setTitle("Change Nickname");
+
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_temp, null, false);
+        // Set up the picker
+        final NumberPicker np = (NumberPicker) viewInflated.findViewById(R.id.np);
+        np.setMaxValue(100);
+        np.setMinValue(0);
+        np.setWrapSelectorWheel(false);
+
+        builder.setView(viewInflated);
+
+        // Set up the buttons
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //close keyboard
+                dialog.dismiss();
+                device.setTargetTemperature(np.getValue());
+                populateAdapter();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //close keyboard
+                dialog.cancel();
+            }
+        });
+
+
+        builder.show();
+
+
+
     }
 }

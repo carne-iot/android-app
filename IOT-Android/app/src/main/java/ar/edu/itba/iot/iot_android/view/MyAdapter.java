@@ -83,6 +83,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
             }
         });
 
+        holder.targetTempTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainActivity.changeDeviceTargetTemperature(position);
+                    }
+                });
+            }
+        });
+
     }
 
     public void updateDevice(String name, String currTemp, String targetTemp, int index) {
