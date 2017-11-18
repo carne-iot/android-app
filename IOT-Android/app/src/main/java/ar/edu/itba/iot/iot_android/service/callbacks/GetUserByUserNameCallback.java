@@ -2,6 +2,7 @@ package ar.edu.itba.iot.iot_android.service.callbacks;
 
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.mindorks.placeholderview.PlaceHolderView;
@@ -52,6 +53,8 @@ public class GetUserByUserNameCallback implements Callback {
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                View v = mainActivity.findViewById(R.id.addDevice);
+                v.setVisibility(View.VISIBLE);
                 userController.setLoggedIn(true);
                 mainActivity.updateDrawer();
             }

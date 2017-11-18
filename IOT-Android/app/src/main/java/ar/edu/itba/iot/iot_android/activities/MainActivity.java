@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        View v = this.findViewById(R.id.addDevice);
+        v.setVisibility(View.INVISIBLE);
+
         user = new User("hjulian", "hjulian", Long.valueOf(4));
 
         user.addObserver(userChange);
@@ -87,8 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        View v = this.findViewById(R.id.addDevice);
         v.setOnClickListener(this);
         mDrawer = (DrawerLayout)findViewById(R.id.drawerLayout);
         mDrawerView = (PlaceHolderView)findViewById(R.id.drawerView);
