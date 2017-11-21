@@ -35,7 +35,6 @@ public class GetUserByUserNameCallback implements Callback {
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        //TODO no anda el endpoint y no se sabe como devuelve
         if(!response.isSuccessful()){
             mainActivity.runOnUiThread(new Runnable() {
                 @Override
@@ -55,7 +54,6 @@ public class GetUserByUserNameCallback implements Callback {
             public void run() {
                 View v = mainActivity.findViewById(R.id.addDevice);
                 v.setVisibility(View.VISIBLE);
-                userController.setLoggedIn(true);
                 mainActivity.updateDrawer();
             }
         });

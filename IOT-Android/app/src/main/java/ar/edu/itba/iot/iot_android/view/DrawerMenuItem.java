@@ -1,7 +1,6 @@
 package ar.edu.itba.iot.iot_android.view;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -111,7 +110,7 @@ public class DrawerMenuItem {
                 break;
             case DRAWER_MENU_SIGNIN:
                 Toast.makeText(mContext, "SIGNING IN", Toast.LENGTH_SHORT).show();
-                userController.getUser().setUserName("julian");
+                userController.getUser().setUsername("julian");
                 userController.getUser().setPassword("julian");
                 userController.getUser().setId(Long.valueOf(4));
                 userController.login();

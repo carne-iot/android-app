@@ -13,6 +13,7 @@ public class UserAux {
     private String fullName;
     private String[] roles;
     private String locationUrl;
+    private Object[] links;
 
     public String getUsername() {
         return username;
@@ -76,6 +77,14 @@ public class UserAux {
 
     public void setLocationUrl(String locationUrl) {
         this.locationUrl = locationUrl;
+    }
+
+    public Object[] getLinks() {
+        return links;
+    }
+
+    public void setLinks(Object[] links) {
+        this.links = links;
     }
 }
 

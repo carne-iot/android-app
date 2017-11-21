@@ -2,7 +2,6 @@ package ar.edu.itba.iot.iot_android.model;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -13,7 +12,7 @@ public class User extends Observable implements Serializable{
 
     private List<Device> devices =  new LinkedList<>();
 
-    private String userName;
+    private String username;
 
     private String password;
 
@@ -29,19 +28,19 @@ public class User extends Observable implements Serializable{
 
     }
 
-    public User(String userName, String password) {
-        this.userName = userName;
+    public User(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
-    public User(String userName, String password, Long id) {
-        this.userName = userName;
+    public User(String username, String password, Long id) {
+        this.username = username;
         this.password = password;
         this.id = id;
     }
 
     public User(UserAux userAux){
-        this.userName = userAux.getUsername();
+        this.username = userAux.getUsername();
         this.id = userAux.getId();
         this.email = userAux.getEmail();
         this.fullName = userAux.getFullName();
@@ -57,8 +56,8 @@ public class User extends Observable implements Serializable{
         updated("token");
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
@@ -87,8 +86,8 @@ public class User extends Observable implements Serializable{
     }
 
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFullName() {

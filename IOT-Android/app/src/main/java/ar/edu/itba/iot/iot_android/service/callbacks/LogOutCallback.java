@@ -1,5 +1,7 @@
 package ar.edu.itba.iot.iot_android.service.callbacks;
 
+import android.content.Intent;
+
 import java.io.IOException;
 
 import ar.edu.itba.iot.iot_android.activities.MainActivity;
@@ -23,11 +25,10 @@ public class LogOutCallback implements okhttp3.Callback {
 
     @Override
     public void onResponse(Call call, Response response) {
-        userController.setLoggedIn(false);
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mainActivity.updateDrawer();
+                mainActivity.logout();
             }
         });
     }

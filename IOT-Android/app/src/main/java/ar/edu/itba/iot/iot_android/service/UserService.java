@@ -10,6 +10,7 @@ import ar.edu.itba.iot.iot_android.model.Device;
 import ar.edu.itba.iot.iot_android.model.User;
 import ar.edu.itba.iot.iot_android.service.callbacks.GetUserByUserNameCallback;
 import okhttp3.Callback;
+import okhttp3.Response;
 
 public class UserService  implements Serializable {
 
@@ -26,7 +27,6 @@ public class UserService  implements Serializable {
 
     public void logIn(String username, String password, Callback callback) {
         try {
-            //TODO user JSON lib
             httpService.post(baseURL + "/auth/login", "{\n" +
                     " \"username\":\"julian\",\n" +
                     " \"password\":\"julian\"\n" +
@@ -34,6 +34,18 @@ public class UserService  implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Response logInSync(String username, String password) {
+        try {
+            return httpService.postSync(baseURL + "/auth/login", "{\n" +
+                    " \"username\":\"" + username + "\",\n" +
+                    " \"password\":\"" + password + "\"\n" +
+                    "}");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void getDevice(Long userId, String deviceId, String token, Callback callback){

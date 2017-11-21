@@ -3,6 +3,7 @@ package ar.edu.itba.iot.iot_android.utils;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
@@ -19,7 +20,7 @@ import ar.edu.itba.iot.iot_android.model.UserAux;
 //TODO no usar pojo auxiliar
 public class JSONManager {
 
-    final private static ObjectMapper objectMapper = new ObjectMapper();
+    final private static ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);;
 
     public static List<Device> parseDevices(String json){
         List<DeviceAux> devicesAux = new ArrayList<>();

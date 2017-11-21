@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -43,6 +44,7 @@ import ar.edu.itba.iot.iot_android.view.MyAdapter;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView mRecyclerView;
     private MyAdapter mAdapter;
+    private SharedPreferences sp;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<String> devicesNames = null;
     private List<String> targetTemps = null;
@@ -59,8 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void update(Observable o, Object arg) {
-            if(((String) arg).equals("token")) userController.getFullUserData();
-            else if(((String) arg).equals("id")){
+            if(((String) arg).equals("id")){
                 userController.getDevices();
             }
         }
@@ -75,15 +76,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View v = this.findViewById(R.id.addDevice);
         v.setVisibility(View.INVISIBLE);
 
-        user = new User("hjulian", "hjulian", Long.valueOf(4));
+        sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+
+        user = new User(getIntent().getStringExtra("username"), getIntent().getStringExtra("password"));
+        user.setToken(getIntent().getStringExtra("token"));
+        user.setLogoutURL(getIntent().getStringExtra("logoutURL"));
 
         user.addObserver(userChange);
 
         userController = new UserController(this, user);
 
-        userController.login();
-
-
+        userController.getFullUserData();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
@@ -143,21 +146,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void setupDrawer(){
 
-        if(userController.isLoggedIn()){
-            mDrawerView
-                    .addView(new DrawerHeader(userController))
-                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE, userController))
-                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_NOTIFICATIONS, userController))
-                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_TERMS, userController))
-                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS, userController))
-                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_LOGOUT, userController));
-        }else{
-            mDrawerView
-                    .addView(new DrawerHeader(userController))
-                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_SIGNIN, userController))
-                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_TERMS, userController))
-                    .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS, userController));
-        }
+        mDrawerView
+                .addView(new DrawerHeader(userController))
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE, userController))
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_NOTIFICATIONS, userController))
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_TERMS, userController))
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS, userController))
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_LOGOUT, userController));
 
         ActionBarDrawerToggle  drawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.open_drawer, R.string.close_drawer){
             @Override
@@ -252,12 +247,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void changeDeviceTargetTemperature(final int deviceNumber) {
         final Device device = user.getDevices().get(deviceNumber);
         AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_Alert);
-        builder.setTitle("Change Nickname");
+        builder.setTitle("Change Target Temperature");
 
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_temp, null, false);
         // Set up the picker
         final NumberPicker np = (NumberPicker) viewInflated.findViewById(R.id.np);
-        np.setMaxValue(100);
+        np.setMaxValue(99);
         np.setMinValue(0);
         np.setWrapSelectorWheel(false);
 
@@ -280,11 +275,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dialog.cancel();
             }
         });
-
-
         builder.show();
+    }
 
+    public void logout() {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("token", "");
+        editor.commit();
 
-
+        Intent intent = new Intent(this, LogInActivity.class);
+        startActivity(intent);
     }
 }

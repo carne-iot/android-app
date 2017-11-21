@@ -88,7 +88,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                 mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mainActivity.changeTargetTemperature(position);
+                        mainActivity.changeDeviceTargetTemperature(position);
                     }
                 });
             }
