@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ public class LogInActivity extends AppCompatActivity {
     EditText passwordText;
     Button loginButton;
     TextView signupLink;
+    ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,10 @@ public class LogInActivity extends AppCompatActivity {
         passwordText = (EditText) this.findViewById(R.id.input_password);
         loginButton = (Button) this.findViewById(R.id.btn_login);
         signupLink = (TextView) this.findViewById(R.id.link_signup);
+        progressBar = (ProgressBar) this.findViewById(R.id.progressBar);
+
+        progressBar.setIndeterminate(true);
+
 
         loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -89,11 +96,8 @@ public class LogInActivity extends AppCompatActivity {
 
         loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LogInActivity.this,
-                R.style.AppTheme);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
+
+        progressBar.setVisibility(View.VISIBLE);
 
         final String username = usernameText.getText().toString();
         final String password = passwordText.getText().toString();
@@ -114,7 +118,7 @@ public class LogInActivity extends AppCompatActivity {
                         }else{
                             onLoginFailed();
                         }
-                        progressDialog.dismiss();
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 }, 3000);
     }

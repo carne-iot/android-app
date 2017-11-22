@@ -4,9 +4,11 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText passwordText;
     Button signupButton;
     TextView loginLink;
+    ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,9 @@ public class SignUpActivity extends AppCompatActivity {
         passwordText = (EditText) this.findViewById(R.id.input_password);
         signupButton = (Button) this.findViewById(R.id.btn_signup);
         loginLink = (TextView) this.findViewById(R.id.link_login);
+        progressBar = (ProgressBar) this.findViewById(R.id.progressBar);
+
+        progressBar.setIndeterminate(true);
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,11 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         signupButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this,
-                R.style.AppTheme);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
-        progressDialog.show();
+        progressBar.setVisibility(View.VISIBLE);
 
         String name = FullNameText.getText().toString();
         String email = emailText.getText().toString();
@@ -77,7 +79,7 @@ public class SignUpActivity extends AppCompatActivity {
                         // depending on success
                         onSignupSuccess();
                         // onSignupFailed();
-                        progressDialog.dismiss();
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 }, 3000);
     }
