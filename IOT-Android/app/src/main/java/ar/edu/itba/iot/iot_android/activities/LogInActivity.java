@@ -130,8 +130,13 @@ public class LogInActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 // TODO: Implement successful signup logic here
+
+                usernameText.setText(data.getStringExtra("username"));
+                passwordText.setText(data.getStringExtra("password"));
+                login();
+
                 // By default we just finish the Activity and log them in automatically
-                this.finish();
+                //this.finish();
             }
         }
     }

@@ -1,7 +1,9 @@
 package ar.edu.itba.iot.iot_android.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,24 +14,37 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import ar.edu.itba.iot.iot_android.R;
+import ar.edu.itba.iot.iot_android.service.UserService;
+import okhttp3.Response;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    EditText FullNameText;
+    EditText userNameText;
+    EditText fullNameText;
     EditText emailText;
     EditText passwordText;
     Button signupButton;
     TextView loginLink;
     ProgressBar progressBar;
 
+
+    UserService userService = new UserService();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        FullNameText = (EditText) this.findViewById(R.id.input_full_name);
-        FullNameText = (EditText) this.findViewById(R.id.input_full_name);
+        fullNameText = (EditText) this.findViewById(R.id.input_full_name);
+        userNameText = (EditText) this.findViewById(R.id.input_username);
         emailText = (EditText) this.findViewById(R.id.input_email);
         passwordText = (EditText) this.findViewById(R.id.input_password);
         signupButton = (Button) this.findViewById(R.id.btn_signup);
@@ -66,20 +81,41 @@ public class SignUpActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        String name = FullNameText.getText().toString();
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
-
         // TODO: Implement your own signup logic here.
+
+        final StrictMode.ThreadPolicy oldPolicy = StrictMode.getThreadPolicy();
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onSignupSuccess or onSignupFailed
                         // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                        Date birthDate = null;
+                        try {
+                            birthDate = dateFormat.parse("1989-03-26");
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        Response response = userService.signUpSync(fullNameText.getText().toString(),
+                                emailText.getText().toString(), dateFormat.format(birthDate),
+                                passwordText.getText().toString(), userNameText.getText().toString());
+
                         progressBar.setVisibility(View.INVISIBLE);
+                        if(response != null && response.isSuccessful()){
+                            StrictMode.setThreadPolicy(oldPolicy);
+                            System.out.println("calling success");
+                            onSignupSuccess();
+                        }else{
+                            System.out.println("calling failure");
+                            onSignupFailed();
+                        }
                     }
                 }, 3000);
     }
@@ -87,7 +123,10 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void onSignupSuccess() {
         signupButton.setEnabled(true);
-        setResult(RESULT_OK, null);
+        Intent intent = new Intent();
+        intent.putExtra("username", userNameText.getText().toString());
+        intent.putExtra("password", passwordText.getText().toString());
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -100,15 +139,15 @@ public class SignUpActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String name = FullNameText.getText().toString();
+        String name = fullNameText.getText().toString();
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
-            FullNameText.setError("at least 3 characters");
+            fullNameText.setError("at least 3 characters");
             valid = false;
         } else {
-            FullNameText.setError(null);
+            fullNameText.setError(null);
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {

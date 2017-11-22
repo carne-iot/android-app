@@ -48,6 +48,23 @@ public class UserService  implements Serializable {
         return null;
     }
 
+    public Response signUpSync(String fullName, String email, String birthDate,
+                               String password, String userName) {
+        try {
+            Response response = httpService.postSync(baseURL + "/users", "{\n" +
+                    " \"username\":\"" + userName + "\",\n" +
+                    " \"password\":\"" + password + "\"\n," +
+                    " \"birthDate\":\"" + birthDate + "\"\n," +
+                    " \"email\":\"" + email + "\"\n," +
+                    " \"fullName\":\"" + fullName + "\"\n" +
+                    "}");
+            return response;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void getDevice(Long userId, String deviceId, String token, Callback callback){
         try {
             httpService.get(baseURL + "/users/" + userId + "/devices/" + deviceId, token, callback);
