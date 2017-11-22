@@ -52,12 +52,6 @@ public class LogInActivity extends AppCompatActivity {
 
         sp = getSharedPreferences("user", Context.MODE_PRIVATE);
 
-        String token = sp.getString("token", "");
-        if(!token.isEmpty()) onLoginSuccess(sp.getString("username", ""),
-                                            sp.getString("password", ""),
-                                            token,
-                                            sp.getString("logoutURL", ""));
-
         usernameText = (EditText) this.findViewById(R.id.input_username);
         passwordText = (EditText) this.findViewById(R.id.input_password);
         loginButton = (Button) this.findViewById(R.id.btn_login);
@@ -65,6 +59,12 @@ public class LogInActivity extends AppCompatActivity {
         progressBar = (ProgressBar) this.findViewById(R.id.progressBar);
 
         progressBar.setIndeterminate(true);
+
+        String token = sp.getString("token", "");
+        if(!token.isEmpty()) onLoginSuccess(sp.getString("username", ""),
+                sp.getString("password", ""),
+                token,
+                sp.getString("logoutURL", ""));
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +150,12 @@ public class LogInActivity extends AppCompatActivity {
     public void onLoginSuccess(String username, String password, String token, String logoutURL) {
         loginButton.setEnabled(true);
         Intent intent = new Intent(this, MainActivity.class);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.putString("token", token);
+        editor.putString("logoutURL", logoutURL);
+        editor.commit();
         intent.putExtra("username", username);
         intent.putExtra("password", password);
         intent.putExtra("token", token);
