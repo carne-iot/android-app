@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 
@@ -27,8 +29,15 @@ import ar.edu.itba.iot.iot_android.R;
 
 import com.mindorks.placeholderview.PlaceHolderView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -122,27 +131,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void populateAdapter() {
         int n = user.getDevices().size();
+        int i = 0;
+        for(Device d : user.getDevices()){
+            if(targetTemps.size()> i ) d.setTargetTemperature(Double.valueOf(targetTemps.get(i++)));
+        }
 
         devicesNames = new ArrayList<>(n);
-        targetTemps = new ArrayList<>(n);
+        ArrayList<String> targetTempsAux = new ArrayList<>(n);
         currentTemps = new ArrayList<>(n);
 
-        int i = 0;
+        i = 0;
 
         devicesNames.clear();
         currentTemps.clear();
-        targetTemps.clear();
 
         for(Device d: user.getDevices()){
             devicesNames.add(i, d.getNickname());
             currentTemps.add(i, String.format("%.1f", d.getTemperature()));
-            targetTemps.add(i, String.format("%.1f", d.getTargetTemperature()));
+            targetTempsAux.add(i, String.format("%.1f", d.getTargetTemperature()));
             i++;
         }
 
-        if(mAdapter != null) mAdapter.updateAll(devicesNames, currentTemps, targetTemps);
+        if(mAdapter != null) mAdapter.updateAll(devicesNames, currentTemps, targetTempsAux);
         else{
-            mAdapter = new MyAdapter(this, devicesNames, currentTemps, targetTemps);
+            mAdapter = new MyAdapter(this, devicesNames, currentTemps, targetTempsAux);
             mRecyclerView.setAdapter(mAdapter);
         }
     }
@@ -256,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Set up the picker
         final NumberPicker np = (NumberPicker) viewInflated.findViewById(R.id.np);
         np.setMaxValue(99);
-        np.setMinValue(0);
+        np.setMinValue(50);
         np.setWrapSelectorWheel(false);
 
         builder.setView(viewInflated);
@@ -267,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(DialogInterface dialog, int which) {
                 //close keyboard
                 dialog.dismiss();
+                targetTemps.set(deviceNumber, String.valueOf(np.getValue()));
                 device.setTargetTemperature(np.getValue());
                 populateAdapter();
             }
@@ -292,5 +305,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void updateDevices(){
         userController.getDevices();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(targetTemps == null) return;
+        try {
+            FileOutputStream fos = this.openFileOutput("targetTemps", Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(targetTemps);
+            os.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(targetTemps == null) targetTemps = new ArrayList<>();
+        try {
+            FileInputStream fis = this.openFileInput("targetTemps");
+            ObjectInputStream is = new ObjectInputStream(fis);
+            targetTemps = (ArrayList) is.readObject();
+            is.close();
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(user != null) userController.getDevices();
     }
 }
