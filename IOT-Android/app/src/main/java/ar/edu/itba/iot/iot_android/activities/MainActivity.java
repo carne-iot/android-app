@@ -37,6 +37,7 @@ import java.util.Set;
 import ar.edu.itba.iot.iot_android.controller.UserController;
 import ar.edu.itba.iot.iot_android.model.Device;
 import ar.edu.itba.iot.iot_android.model.User;
+import ar.edu.itba.iot.iot_android.tasks.GetDevicesAsyncTask;
 import ar.edu.itba.iot.iot_android.view.DrawerHeader;
 import ar.edu.itba.iot.iot_android.view.DrawerMenuItem;
 import ar.edu.itba.iot.iot_android.view.MyAdapter;
@@ -99,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         setupDrawer();
 
+        new GetDevicesAsyncTask(this).execute();
+
     }
 
     // Menu icons are inflated just as they were with actionbar
@@ -137,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             i++;
         }
 
-        if(mAdapter != null) mAdapter.updateAll(devicesNames, targetTemps, currentTemps);
+        if(mAdapter != null) mAdapter.updateAll(devicesNames, currentTemps, targetTemps);
         else{
             mAdapter = new MyAdapter(this, devicesNames, currentTemps, targetTemps);
             mRecyclerView.setAdapter(mAdapter);
@@ -285,5 +288,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = new Intent(this, LogInActivity.class);
         startActivity(intent);
+    }
+
+    public void updateDevices(){
+        userController.getDevices();
     }
 }

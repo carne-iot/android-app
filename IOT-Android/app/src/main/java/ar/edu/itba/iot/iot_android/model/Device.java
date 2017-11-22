@@ -17,10 +17,9 @@ public class Device extends Observable implements Serializable{
     private String nickname;
 
     public Device(DeviceAux dev) {
-        this.targetTemperature = (Math.random() * 40 + 40);
-        if(dev.getTemperature() != null) temperature = dev.getTemperature();
-        else temperature = Math.random() * targetTemperature - Math.random() * 30 + 10;
-        id = dev.getId();
+        this.targetTemperature = 0;
+        this.temperature = dev.getTemperature();
+        this.id = dev.getId();
         if(dev.getNickname() != null) nickname = dev.getNickname();
         else nickname = "device";
 
@@ -82,8 +81,6 @@ public class Device extends Observable implements Serializable{
 
     public void setTemperature(double temperature) {
         this.temperature = temperature;
-        this.setChanged();
-        this.notifyObservers();
     }
 
     @Override
