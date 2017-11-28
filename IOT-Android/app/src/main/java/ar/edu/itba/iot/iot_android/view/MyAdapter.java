@@ -11,8 +11,6 @@ import java.util.List;
 
 import ar.edu.itba.iot.iot_android.R;
 import ar.edu.itba.iot.iot_android.activities.MainActivity;
-import ar.edu.itba.iot.iot_android.controller.UserController;
-import ar.edu.itba.iot.iot_android.model.User;
 
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{

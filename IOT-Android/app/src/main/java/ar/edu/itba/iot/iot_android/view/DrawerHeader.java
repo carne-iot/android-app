@@ -1,6 +1,5 @@
 package ar.edu.itba.iot.iot_android.view;
 
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -9,11 +8,8 @@ import com.mindorks.placeholderview.annotations.NonReusable;
 import com.mindorks.placeholderview.annotations.Resolve;
 import com.mindorks.placeholderview.annotations.View;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import ar.edu.itba.iot.iot_android.R;
-import ar.edu.itba.iot.iot_android.controller.UserController;
+import ar.edu.itba.iot.iot_android.controller.Controller;
 
 //https://medium.com/@janishar.ali/navigation-drawer-android-example-8dfe38c66f59
 
@@ -31,17 +27,17 @@ public class DrawerHeader {
     @View(R.id.emailTxt)
     private TextView emailTxt;
 
-    private final UserController userController;
+    private final Controller controller;
 
-    public DrawerHeader(UserController userController) {
-        this.userController = userController;
+    public DrawerHeader(Controller controller) {
+        this.controller = controller;
     }
 
     @Resolve
     private void onResolved() {
-        if(userController.getUser() != null){
-            nameTxt.setText(userController.getUser().getFullName());
-            emailTxt.setText(userController.getUser().getEmail());
+        if(controller.getUser() != null){
+            nameTxt.setText(controller.getUser().getFullName());
+            emailTxt.setText(controller.getUser().getEmail());
         }
     }
 }

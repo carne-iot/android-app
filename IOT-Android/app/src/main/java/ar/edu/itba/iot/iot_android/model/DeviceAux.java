@@ -4,6 +4,7 @@ public class DeviceAux {
 
     private String id;
     private Double temperature;
+    private Double targetTemperature;
     private String lastTemperatureUpdate;
     private String state;
     private String locationUrl;
@@ -55,6 +56,14 @@ public class DeviceAux {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public Double getTargetTemperature() {
+        return targetTemperature;
+    }
+
+    public void setTargetTemperature(Double targetTemperature) {
+        this.targetTemperature = targetTemperature;
     }
 
     @Override

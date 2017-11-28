@@ -2,7 +2,6 @@ package ar.edu.itba.iot.iot_android.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,11 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -28,13 +25,11 @@ import ar.edu.itba.iot.iot_android.R;
 import com.mindorks.placeholderview.PlaceHolderView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 
-import ar.edu.itba.iot.iot_android.controller.UserController;
+import ar.edu.itba.iot.iot_android.controller.Controller;
 import ar.edu.itba.iot.iot_android.model.Device;
 import ar.edu.itba.iot.iot_android.model.User;
 import ar.edu.itba.iot.iot_android.tasks.GetDevicesAsyncTask;
@@ -53,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PlaceHolderView mDrawerView;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
-    private UserController userController;
+    private Controller controller;
     private User user;
 
 
@@ -63,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void update(Observable o, Object arg) {
             if(((String) arg).equals("id")){
-                userController.getDevices();
+                controller.getDevices();
             }
         }
     };
@@ -85,9 +80,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         user.addObserver(userChange);
 
-        userController = new UserController(this, user);
+        controller = new Controller(this, user);
 
-        userController.getFullUserData();
+        controller.getFullUserData();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
@@ -150,12 +145,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setupDrawer(){
 
         mDrawerView
-                .addView(new DrawerHeader(userController))
-                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE, userController))
-                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_NOTIFICATIONS, userController))
-                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_TERMS, userController))
-                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS, userController))
-                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_LOGOUT, userController));
+                .addView(new DrawerHeader(controller))
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_PROFILE, controller))
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_NOTIFICATIONS, controller))
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_TERMS, controller))
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_SETTINGS, controller))
+                .addView(new DrawerMenuItem(this, DrawerMenuItem.DRAWER_MENU_ITEM_LOGOUT, controller));
 
         ActionBarDrawerToggle  drawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.open_drawer, R.string.close_drawer){
             @Override
@@ -178,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(resultCode == Activity.RESULT_OK){
                 String[] a = data.getStringArrayExtra("codes");
                 for(String code : a){
-                    userController.registerDevice(code);
+                    controller.registerDevice(code);
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -231,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dialog.dismiss();
                 device.setNickname(input.getText().toString());
                 populateAdapter();
+                controller.changeDeviceNickname(user, device.getId(), input.getText().toString());
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -255,8 +251,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.edit_temp, null, false);
         // Set up the picker
         final NumberPicker np = (NumberPicker) viewInflated.findViewById(R.id.np);
-        np.setMaxValue(99);
-        np.setMinValue(0);
+        np.setMaxValue(90);
+        np.setMinValue(50);
         np.setWrapSelectorWheel(false);
 
         builder.setView(viewInflated);
@@ -269,6 +265,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dialog.dismiss();
                 device.setTargetTemperature(np.getValue());
                 populateAdapter();
+                controller.changeTargetTemperature(user, device.getId(), np.getValue());
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -291,6 +288,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void updateDevices(){
-        userController.getDevices();
+        controller.getDevices();
     }
 }

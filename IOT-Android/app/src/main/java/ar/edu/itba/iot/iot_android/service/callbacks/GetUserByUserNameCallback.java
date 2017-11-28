@@ -1,17 +1,13 @@
 package ar.edu.itba.iot.iot_android.service.callbacks;
 
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
-
-import com.mindorks.placeholderview.PlaceHolderView;
 
 import java.io.IOException;
 
 import ar.edu.itba.iot.iot_android.R;
 import ar.edu.itba.iot.iot_android.activities.MainActivity;
-import ar.edu.itba.iot.iot_android.controller.UserController;
+import ar.edu.itba.iot.iot_android.controller.Controller;
 import ar.edu.itba.iot.iot_android.model.User;
 import ar.edu.itba.iot.iot_android.utils.JSONManager;
 import okhttp3.Call;
@@ -20,12 +16,12 @@ import okhttp3.Response;
 
 public class GetUserByUserNameCallback implements Callback {
 
-    private final UserController userController;
+    private final Controller controller;
     private final MainActivity mainActivity;
 
-    public GetUserByUserNameCallback(MainActivity mainActivity, UserController userController) {
+    public GetUserByUserNameCallback(MainActivity mainActivity, Controller controller) {
         this.mainActivity = mainActivity;
-        this.userController = userController;
+        this.controller = controller;
     }
 
     @Override
@@ -46,9 +42,9 @@ public class GetUserByUserNameCallback implements Callback {
             return;
         }
         User newUser =  JSONManager.parseUser(response.body().string());
-        userController.getUser().setId(newUser.getId());
-        userController.getUser().setFullName(newUser.getFullName());
-        userController.getUser().setEmail(newUser.getEmail());
+        controller.getUser().setId(newUser.getId());
+        controller.getUser().setFullName(newUser.getFullName());
+        controller.getUser().setEmail(newUser.getEmail());
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {

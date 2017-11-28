@@ -1,21 +1,19 @@
 package ar.edu.itba.iot.iot_android.service.callbacks;
 
-import android.content.Intent;
-
 import java.io.IOException;
 
 import ar.edu.itba.iot.iot_android.activities.MainActivity;
-import ar.edu.itba.iot.iot_android.controller.UserController;
+import ar.edu.itba.iot.iot_android.controller.Controller;
 import okhttp3.Call;
 import okhttp3.Response;
 
 public class LogOutCallback implements okhttp3.Callback {
 
-    private final UserController userController;
+    private final Controller controller;
     private final MainActivity mainActivity;
 
-    public LogOutCallback(MainActivity mainActivity, UserController userController) {
-        this.userController = userController;
+    public LogOutCallback(MainActivity mainActivity, Controller controller) {
+        this.controller = controller;
         this.mainActivity = mainActivity;
     }
 

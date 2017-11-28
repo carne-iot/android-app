@@ -109,4 +109,27 @@ public class UserService  implements Serializable {
         }
 
     }
+
+    public void changeTargetTemperature(String deviceId, String token, Callback callback, double temp){
+
+        try {
+            String json = "{\"value\":"+temp+"}";
+            httpService.put(baseURL + "/devices/" + deviceId + "/target-temperature", json, token, callback);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("Fail:", "Could not set target temperature");
+        }
+    }
+
+    public void changeDeviceName(Long userId, String deviceId, String token, Callback callback, String nickname){
+
+        try {
+            String url = baseURL + "/users/" + userId + "/devices/" + deviceId + "/nickname";
+            String json = "{\"value\":\"" + nickname + "\"}";
+            httpService.put(url, json, token, callback);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

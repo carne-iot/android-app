@@ -17,7 +17,7 @@ public class Device extends Observable implements Serializable{
     private String nickname;
 
     public Device(DeviceAux dev) {
-        this.targetTemperature = 0;
+        this.targetTemperature = dev.getTargetTemperature() != null ? dev.getTargetTemperature() : 0;
         this.temperature = dev.getTemperature();
         this.id = dev.getId();
         if(dev.getNickname() != null) nickname = dev.getNickname();

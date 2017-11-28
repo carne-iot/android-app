@@ -36,7 +36,8 @@ public class GetDevicesCallback implements Callback {
     public void onResponse(Call call, Response response) throws IOException {
         Collection<Device> newDevices = JSONManager.parseDevices(response.body().string());
         user.setDevices(newDevices);
-        Log.d("devices", "i got my devices");
+        Log.d("devices", "I got my devices");
+
         mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {

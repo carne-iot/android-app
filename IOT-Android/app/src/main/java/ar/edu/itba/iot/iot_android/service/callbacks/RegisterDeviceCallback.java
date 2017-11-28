@@ -1,11 +1,8 @@
 package ar.edu.itba.iot.iot_android.service.callbacks;
 
-import android.util.Log;
-
 import java.io.IOException;
-import java.util.Observer;
 
-import ar.edu.itba.iot.iot_android.controller.UserController;
+import ar.edu.itba.iot.iot_android.controller.Controller;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -16,10 +13,10 @@ import okhttp3.Response;
 
 public class RegisterDeviceCallback implements Callback {
 
-    private final UserController userController;
+    private final Controller controller;
 
-    public RegisterDeviceCallback(UserController userController) {
-        this.userController = userController;
+    public RegisterDeviceCallback(Controller controller) {
+        this.controller = controller;
     }
 
     @Override
@@ -29,6 +26,6 @@ public class RegisterDeviceCallback implements Callback {
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        userController.getDevices();
+        controller.getDevices();
     }
 }

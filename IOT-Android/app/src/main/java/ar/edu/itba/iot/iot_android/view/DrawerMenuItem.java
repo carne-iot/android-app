@@ -14,7 +14,7 @@ import com.mindorks.placeholderview.annotations.View;
 import java.io.IOException;
 
 import ar.edu.itba.iot.iot_android.R;
-import ar.edu.itba.iot.iot_android.controller.UserController;
+import ar.edu.itba.iot.iot_android.controller.Controller;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -44,10 +44,10 @@ public class DrawerMenuItem {
     @View(R.id.itemIcon)
     private ImageView itemIcon;
 
-    private UserController userController;
+    private Controller controller;
 
-    public DrawerMenuItem(Context context, int menuPosition, UserController userController) {
-        this.userController = userController;
+    public DrawerMenuItem(Context context, int menuPosition, Controller controller) {
+        this.controller = controller;
         mContext = context;
         mMenuPosition = menuPosition;
     }
@@ -105,15 +105,15 @@ public class DrawerMenuItem {
                 break;
             case DRAWER_MENU_ITEM_LOGOUT:
                 Toast.makeText(mContext, "Logout", Toast.LENGTH_SHORT).show();
-                userController.signOut(userController.getUser());
+                controller.signOut(controller.getUser());
                 if(mCallBack != null)mCallBack.onLogoutMenuSelected();
                 break;
             case DRAWER_MENU_SIGNIN:
                 Toast.makeText(mContext, "SIGNING IN", Toast.LENGTH_SHORT).show();
-                userController.getUser().setUsername("julian");
-                userController.getUser().setPassword("julian");
-                userController.getUser().setId(Long.valueOf(4));
-                userController.login();
+                controller.getUser().setUsername("julian");
+                controller.getUser().setPassword("julian");
+                controller.getUser().setId(Long.valueOf(4));
+                controller.login();
                 onTermsMenuSelected();
                 if(mCallBack != null)mCallBack.onTermsMenuSelected();
                 break;
