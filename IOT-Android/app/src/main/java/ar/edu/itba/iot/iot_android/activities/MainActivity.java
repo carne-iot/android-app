@@ -2,11 +2,14 @@ package ar.edu.itba.iot.iot_android.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Toolbar mToolbar;
     private Controller controller;
     private User user;
+    private int notCounter = 0;
 
 
 
@@ -132,10 +136,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             devicesNames.add(i, d.getNickname());
             currentTemps.add(i, String.format("%.1f", d.getTemperature()));
             targetTemps.add(i, String.format("%.1f", d.getTargetTemperature()));
+            if(d.getTemperature()>= d.getTargetTemperature()) notification(d.getNickname());
             i++;
         }
-
-        if(mAdapter != null) mAdapter.updateAll(devicesNames, currentTemps, targetTemps);
+        notCounter++;
+        if(mAdapter != null && notCounter%3 == 0) mAdapter.updateAll(devicesNames, currentTemps, targetTemps);
         else{
             mAdapter = new MyAdapter(this, devicesNames, currentTemps, targetTemps);
             mRecyclerView.setAdapter(mAdapter);
@@ -252,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Set up the picker
         final NumberPicker np = (NumberPicker) viewInflated.findViewById(R.id.np);
         np.setMaxValue(90);
-        np.setMinValue(50);
+        np.setMinValue(30);
         np.setWrapSelectorWheel(false);
 
         builder.setView(viewInflated);
@@ -289,5 +294,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void updateDevices(){
         controller.getDevices();
+    }
+
+    private void notification(String name){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setContentTitle("Carne")
+                        .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                        .setContentText("Your " + name +" is ready!");
+
+        Intent resultIntent = new Intent(this, LogInActivity.class);
+        // Because clicking the notification opens a new ("special") activity, there's
+        // no need to create an artificial back stack.
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        // Sets an ID for the notification
+        int mNotificationId = 3761;
+        // Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // Builds the notification and issues it.
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
     }
 }
