@@ -300,6 +300,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setContentTitle("Carne")
+                        .setSmallIcon(R.drawable.ic_carne_notification_icon)
                         .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                         .setContentText("Your " + name +" is ready!");
 
